@@ -1,0 +1,57 @@
+body {
+  font: 14px sans-serif;
+  font-weight: bold;
+}
+button {
+  position: relative;
+  left: 250px;
+}
+
+.chart {
+    /* background-color: #efefef; */
+    background-color: white;
+    /* shape-rendering: crispEdges; */
+    shape-rendering: auto;
+    border-style: solid;
+    border-color: #d3d3d3;
+ }
+
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+ .text0 {
+    fill: red;
+ }
+
+ .text1 {
+    fill: green;
+ }
+
+ .text2 {
+    fill:steelblue;
+ }
+
+ .text3 {
+    fill: yellow;
+ }
+
+ .text4 {
+    fill: purple;
+ }
+
+ .text5 {
+    fill:brown;
+ }
+
+ .node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
