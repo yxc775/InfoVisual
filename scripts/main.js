@@ -26,8 +26,8 @@ var reset = function(){
 	var size = 60
 	var t;
 
-	var dataXRange = { min: -60, max:0 };
-	var dataYRange = { min: 0, max: 100 };
+	var dataXRange = { min: 0, max: 150 };
+	var dataYRange = { min: 0, max: 150 };
 	var xAxisLabelHeader = "X Header";
 	var yAxisLabelHeader = "Y Header";
 	var circleRadius = 4;
@@ -52,8 +52,9 @@ var reset = function(){
 
 			data = json;
 			console.log("JSON loaded");
-			//initializeChart();
-			//createAxes();
+			initializeChart();
+			createAxes();
+			drawDots();
 
 
 		//load data from xlsx
@@ -115,7 +116,7 @@ var reset = function(){
 								.attr("transform", "translate(" + (margin.left / 2.0) + ", " + (chartHeight / 2.0) + ") rotate(-90)")
 								.text(yAxisLabelHeader);
 	}
-
+/*
 	function updateChart(offset){
 		chart.xScale.domain([dataXRange.min + offset,dataXRange.max + offset])
 		chart.xAxisContainer.transition()
@@ -143,12 +144,19 @@ var reset = function(){
 
 		dots.exit().attr("fill","blue")
 	}
+	*/
 
-
-	function drawDots(timestamp) {
+	function drawDots() {
+		var dots = chart.plotArea.selectAll(".KvG").data(data)
+		dots.enter().append("circle").on("click", function(d) {
+		 							console.log("circle: ", d.Blood_glucose_mg_per_dL, ", ", d.Blood_ketones_mg_per_dL);
+		 						}).merge(dots)
+ 						.attr("class", "dot")
+ 						.attr("cx", function(d) { return chart.xScale(d.Blood_glucose_mg_per_dL); })
+ 						.attr("cy", function(d) { return chart.yScale(d.Blood_ketones_mg_per_dL); })
+ 						.attr("r",  circleRadius)
+ 						.attr("fill", "red")
 		// do something with the data here!
-		tick += stateIncrement
-		updateChart(tick)
 	}
 
 
