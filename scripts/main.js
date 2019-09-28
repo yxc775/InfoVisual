@@ -31,7 +31,6 @@ var reset = function(){
 	var yAxisLabelHeader = "Y Header";
 	var circleRadius = 4;
 
-
 	var data;
 	var chart;
 	var chartWidth;
@@ -47,6 +46,7 @@ var reset = function(){
 		chartHeight = height - margin.top - margin.bottom;
 
 		// load data from json
+		/*
 		d3.json("./data/stream_1.json").then(function(json){
 
 			data = json;
@@ -54,8 +54,10 @@ var reset = function(){
 			initializeChart();
 			createAxes();
 			t = d3.interval(drawDots,200)
+			*/
 
-
+		//load data from xlsx
+		
 
 		})
 
