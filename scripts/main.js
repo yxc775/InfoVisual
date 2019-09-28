@@ -18,6 +18,7 @@ var reset = function(){
 ;(function() {
 
 	var margin = { top: 10, right: 10, bottom: 100, left: 50 };
+	var margin = { top: 10, right: 10, bottom: 100, left: 50 };
 	var width = 600;
 	var height = 300;
 	var duration = 250;
@@ -46,18 +47,17 @@ var reset = function(){
 		chartHeight = height - margin.top - margin.bottom;
 
 		// load data from json
-		/*
-		d3.json("./data/stream_1.json").then(function(json){
+
+		d3.json("./data/PKTDataset.json").then(function(json){
 
 			data = json;
 			console.log("JSON loaded");
-			initializeChart();
-			createAxes();
-			t = d3.interval(drawDots,200)
-			*/
+			//initializeChart();
+			//createAxes();
+
 
 		//load data from xlsx
-		
+
 
 		})
 
