@@ -53,8 +53,6 @@ var reset = function(){
 			data = json;
 			console.log("JSON loaded");
 			initializeChart();
-			createAxes();
-			drawDots();
 
 
 		//load data from xlsx
@@ -71,6 +69,8 @@ var reset = function(){
 
 		chart.plotArea = chart.append("g")
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			createAxes();
+			drawDots();
 	}
 
 
@@ -116,35 +116,6 @@ var reset = function(){
 								.attr("transform", "translate(" + (margin.left / 2.0) + ", " + (chartHeight / 2.0) + ") rotate(-90)")
 								.text(yAxisLabelHeader);
 	}
-/*
-	function updateChart(offset){
-		chart.xScale.domain([dataXRange.min + offset,dataXRange.max + offset])
-		chart.xAxisContainer.transition()
-		     .duration(duration)
-		     .ease(d3.easeLinear,.100)
-		     .call(chart.xAxis);
- 		var dots = chart.plotArea.selectAll(".dot").data(data)
-		dots.enter().append("circle").on("click", function(d) {
-		 							console.log("circle: ", d.xVal, ", ", d.yVal);
-		 						}).merge(dots)
-						.transition().duration(duration)
-	 		      .ease(d3.easeLinear,.100)
- 						.attr("class", "dot")
- 						.attr("cx", function(d) { return chart.xScale(d.xVal); })
- 						.attr("cy", function(d) { return chart.yScale(d.yVal); })
- 						.attr("r",  function(d){
-							if(chart.xScale(d.xVal) > 10 && chart.xScale(d.xVal) < chartWidth){
-								 return circleRadius
-							 }
-							 else{
-								 return 0
-							 }
-						 })
- 						.attr("fill", "red")
-
-		dots.exit().attr("fill","blue")
-	}
-	*/
 
 	function drawDots() {
 		var dots = chart.plotArea.selectAll(".KvG").data(data)
