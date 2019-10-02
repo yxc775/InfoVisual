@@ -1,16 +1,25 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<head>
-<title>D3 Starter Fun Time!</title>
-	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<link rel="stylesheet" href="./styles/simple-style.css">
-	<link rel="icon" href="./favicon/favicon.ico">
-</head>
+<html>
+  <head>
+    <title>Line Chart with Multiple Lines</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script>
+  </head>
+  <body>
 
-<body>
-	<div id="KvGandKvT"></div>
-	<div id="GvTandKGvT"></div>
-	<script src="./libraries/d3.v5.min.js"></script>
-	<script src="./scripts/main.js"></script>
-</body>
+  <div>
+    <svg id = "svg1" width="960" height="500"></svg>
+    <script src="glucose_days.js"></script>
+
+    <svg id = "svg2" width="960" height="500"></svg>
+    <script src="kenote_days.js"></script>
+
+    <svg id = "svg3" width="960" height="500"></svg>
+    <script src="index_days.js"></script>
+
+    <svg id = "svg4" width="960" height="500"></svg>
+    <script src="kenote_glucose.js"></script>
+  </div>
+
+  </body>
 </html>
