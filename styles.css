@@ -26,7 +26,6 @@ text {
 
 .axis-label {
   font-size: 3em;
-  /*fill: #8E8883;*/
   fill: #635F5D;
 }
 
@@ -35,21 +34,21 @@ text {
   fill: #635F5D;
 }
 
-#svg1{
+#svg_glucouse_days{
   position: fixed;
 }
 
-#svg2{
+#svg_ketone_days{
   position: fixed;
   left: 960px;
 }
 
-#svg3{
+#svg_GKI_days{
   position: fixed;
   top: 500px;
 }
 
-#svg4{
+#svg_ketone_glucose{
   position: fixed;
   top: 500px;
   left: 960px;
