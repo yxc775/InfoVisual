@@ -36,7 +36,7 @@
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, xValue))
       .range([0, innerWidth]);
-    
+
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, yValue))
       .range([innerHeight, 0]);
@@ -44,14 +44,14 @@
     const xAxis = d3.axisBottom(xScale)
       .tickSize(-innerHeight)
       .tickPadding(15);
-    
+
     const yAxis = d3.axisLeft(yScale)
       .tickSize(-innerWidth)
       .tickPadding(10);
-    
+
     const yAxisG = g.append('g').call(yAxis);
     yAxisG.selectAll('.domain').remove();
-    
+
     yAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', -60)
@@ -60,12 +60,12 @@
         .attr('transform', `rotate(-90)`)
         .attr('text-anchor', 'middle')
         .text(yAxisLabel);
-    
+
     const xAxisG = g.append('g').call(xAxis)
       .attr('transform', `translate(0,${innerHeight})`);
-    
+
     xAxisG.select('.domain').remove();
-    
+
     xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', 80)
@@ -77,7 +77,7 @@
         // line color
     const colorValue = d => d.Patient_ID;
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-    
+
     const lastYValue = d =>
       yValue(d.values[d.values.length - 1]);
 
@@ -103,7 +103,7 @@
 
     // 放大与缩小
     var zoomed = false;
-    svg.on("click", function () {
+    svg.on("dblclick", function () {
       if (!zoomed) { // 放大
         svg.transition().duration(900)
             // 系数是试出来的

@@ -1,10 +1,10 @@
 (function (d3) {
   'use strict';
-
+  var circleset;
   const svg = d3.select('#svg_ketone_glucose');
   const width = +svg.attr('width');
   const height = +svg.attr('height');
-
+  const defaultColor = "steelblue";
   svg.append("rect")
       .attr("width", "100%")
       .attr("height", "100%")
@@ -27,14 +27,14 @@
     // axis
     const xValue = d => d.Blood_ketones_mg_per_dL;
     const xAxisLabel = 'Kenote (mg/dL)';
-    
+
     const yValue = d => d.Blood_glucose_mg_per_dL;
     const yAxisLabel = 'Glucose (mg/dL)';
-    
+
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, xValue))
       .range([0, innerWidth]);
-    
+
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, yValue))
       .range([innerHeight, 0]);
@@ -42,14 +42,14 @@
     const xAxis = d3.axisBottom(xScale)
       .tickSize(-innerHeight)
       .tickPadding(15);
-    
+
     const yAxis = d3.axisLeft(yScale)
       .tickSize(-innerWidth)
       .tickPadding(10);
-    
+
     const yAxisG = g.append('g').call(yAxis);
     yAxisG.selectAll('.domain').remove();
-    
+
     yAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', -60)
@@ -58,12 +58,12 @@
         .attr('transform', `rotate(-90)`)
         .attr('text-anchor', 'middle')
         .text(yAxisLabel);
-    
+
     const xAxisG = g.append('g').call(xAxis)
       .attr('transform', `translate(0,${innerHeight})`);
-    
+
     xAxisG.select('.domain').remove();
-    
+
     xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', 80)
@@ -72,23 +72,24 @@
         .text(xAxisLabel);
 
     // circle
-    g.selectAll("circle")
+    circleset = g.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
         .attr("cx", d => xScale(xValue(d)))
         .attr("cy", d => yScale(yValue(d)))
         .attr("r", 5)
-        .attr("fill", "steelblue")
+        .attr("fill", defaultColor)
         .attr("stroke", 0.5)
         .attr("stroke", "black")
-        // .on("click", function(d) {
-        //   console.log("circle: ", d.xVal, ", ", d.yVal);
-        // });
-
+        .on("click", function(d){
+            circleset.filter(function(f){return (f.Blood_glucose_mg_per_dL != d.Blood_glucose_mg_per_dL) || (f.Blood_ketones_mg_per_dL != d.Blood_ketones_mg_per_dL)}).attr("fill","yellow");
+            console.log("circle: ", d.Blood_glucose_mg_per_dL, ", ", d.Blood_ketones_mg_per_dL);
+            d3.event.stopPropagation();
+        })
     // zoom
     var zoomed = false;
-    svg.on("click", function () {
+    svg.on("dblclick", function () {
       if (!zoomed) {
         svg.transition().duration(900)
             .attr("transform", "scale(" + 2.2 + ") translate(" + -width/5.5 + "," + -height/5 + ")");
@@ -100,6 +101,9 @@
         zoomed = false;
       }
     })
+    .on("click",function(){
+      circleset.attr("fill",defaultColor)
+    });
   };
 
   d3.csv("./test.csv")

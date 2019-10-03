@@ -27,14 +27,14 @@
     // axis
     const xValue = d => d.Days_on_PKT;
     const xAxisLabel = 'Days on PKT';
-    
+
     const yValue = d => d.Blood_ketones_mg_per_dL;
     const yAxisLabel = 'Kenote (mg/dL)';
 
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, xValue))
       .range([0, innerWidth]);
-    
+
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, yValue))
       .range([innerHeight, 0]);
@@ -42,14 +42,14 @@
     const xAxis = d3.axisBottom(xScale)
       .tickSize(-innerHeight)
       .tickPadding(15);
-    
+
     const yAxis = d3.axisLeft(yScale)
       .tickSize(-innerWidth)
       .tickPadding(10);
-    
+
     const yAxisG = g.append('g').call(yAxis);
     yAxisG.selectAll('.domain').remove();
-    
+
     yAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', -60)
@@ -58,12 +58,12 @@
         .attr('transform', `rotate(-90)`)
         .attr('text-anchor', 'middle')
         .text(yAxisLabel);
-    
+
     const xAxisG = g.append('g').call(xAxis)
       .attr('transform', `translate(0,${innerHeight})`);
-    
+
     xAxisG.select('.domain').remove();
-    
+
     xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', 80)
@@ -74,17 +74,17 @@
     // line
     const colorValue = d => d.Patient_ID;
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-    
+
     const lastYValue = d =>
       yValue(d.values[d.values.length - 1]);
-    
+
     const nested = d3.nest()
       .key(colorValue)
       .entries(data)
       .sort((a, b) =>
         d3.descending(lastYValue(a), lastYValue(b))
       );
-    
+
     colorScale.domain(nested.map(d => d.key));
 
     const lineGenerator = d3.line()
@@ -99,7 +99,7 @@
 
     // zoom
     var zoomed = false;
-    svg.on("click", function () {
+    svg.on("dblclick", function () {
       if (!zoomed) {
         svg.transition().duration(900)
             .attr("transform", "scale(" + 2.2 + ") translate(" + -width/5.5 + "," + height/4 + ")");
