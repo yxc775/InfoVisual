@@ -103,7 +103,8 @@
     })
     .on("click",function(){
       circleset.attr("fill",defaultColor)
-    });
+    })
+
   };
 
   d3.csv("./test.csv")

@@ -1,6 +1,6 @@
 (function (d3) {
   'use strict';
-
+  var lineset;
   const svg = d3.select('#svg_GKI_days');
   const width = +svg.attr('width');
   const height = +svg.attr('height');
@@ -92,11 +92,16 @@
         .x(d => xScale(xValue(d)))
         .y(d => yScale(yValue(d)));
 
-    g.selectAll('.line-path').data(nested)
+    lineset = g.selectAll('.line-path').data(nested)
       .enter().append('path')
         .attr('class', 'line-path')
         .attr('d', d => lineGenerator(d.values))
-        .attr('stroke', d => colorScale(d.key));
+        .attr('stroke', d => colorScale(d.key))
+        .on("click", function(d){
+            lineset.filter(function(f){return f.key!= d.key}).attr("opacity",0.1);
+            console.log("Patient: ", d.key);
+            d3.event.stopPropagation();
+        })
 
     // zoom
     var zoomed = false;
@@ -111,6 +116,9 @@
             .attr("transform", "scale(" + 1 + ") translate(" + 0 + "," + 0 + ")");
         zoomed = false;
       }
+    })
+    .on("click",function(){
+       lineset.attr("opacity",1.0);
     })
   };
 
