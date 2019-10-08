@@ -5,6 +5,7 @@
     const width = +svg.attr('width');
     const height = +svg.attr('height');
     const defaultColor = "steelblue";
+    const norm = "norm"
     svg.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
@@ -115,7 +116,14 @@
             .attr("cx", d => xScale(xValue(d)))
             .attr("cy", d => yScale(yValue(d)))
             .attr("r", 5)
-            .attr("class", "non_brushed")
+            .attr("class", function(){
+              if(localStorage.getItem("isbrushing") == "F"){
+                return norm;
+              }
+              else{
+                return "non_brushed"
+              }
+            })
             .attr("fill", defaultColor)
             .attr("stroke", 0.5)
             .attr("stroke", "black")
@@ -204,8 +212,22 @@
             .on("brush", highlightBrushedCircles)
             .on("end", displayTable);
 
-        svg.append("g")
+          if(localStorage.getItem("isbrushing") == "T"){
+            svg.append("g")
             .call(brush);
+          }
+
+          $(window).on("keypress",function(d){
+            if(d.which == 32){
+              if(localStorage.getItem("isbrushing") == "F"){
+                localStorage.setItem("isbrushing","T");
+              }
+              else{
+                localStorage.setItem("isbrushing","F");
+              }
+              location.reload()
+            }
+          })
 
         });
 
