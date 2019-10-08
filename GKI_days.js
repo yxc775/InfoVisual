@@ -98,7 +98,7 @@
         .attr('d', d => lineGenerator(d.values))
         .attr('stroke', d => colorScale(d.key))
         .on("click", function(d){
-            lineset.filter(function(f){return f.key!= d.key}).attr("opacity",0.1);
+            lineset.filter(function(f){return f.key!== d.key}).attr("opacity",0.1);
             console.log("Patient: ", d.key);
             d3.event.stopPropagation();
         })

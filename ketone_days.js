@@ -13,7 +13,7 @@
 
   //
   const render = data => {
-    const title = 'Kenote vs Days on PKT';
+    const title = 'Ketone vs Days on PKT';
     const margin = { top: 60, right: 160, bottom: 88, left: 105 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -30,7 +30,7 @@
     const xAxisLabel = 'Days on PKT';
 
     const yValue = d => d.Blood_ketones_mg_per_dL;
-    const yAxisLabel = 'Kenote (mg/dL)';
+    const yAxisLabel = 'Ketone (mg/dL)';
 
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, xValue))
