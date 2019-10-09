@@ -25,13 +25,22 @@ text {
 }
 
 .axis-label {
-  font-size: 3em;
+  font-size: 2.5em;
   fill: #635F5D;
 }
 
 .title {
-  font-size: 2.7em;
+  font-size: 2.5em;
   fill: #635F5D;
+}
+
+.scrollit {
+  overflow:scroll;
+  height:850px;
+  position: absolute;
+  top: 80px;
+  left: 2120px;
+  visibility: hidden;
 }
 
 #svg_glucouse_days{

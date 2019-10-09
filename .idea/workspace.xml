@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa7f373d-6736-4056-ac69-30133753b267" name="Default Changelist" comment="" />
+    <list default="true" id="aa7f373d-6736-4056-ac69-30133753b267" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GKI_days.js" beforeDir="false" afterPath="$PROJECT_DIR$/GKI_days.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glucose_days.js" beforeDir="false" afterPath="$PROJECT_DIR$/glucose_days.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ketone_days.js" beforeDir="false" afterPath="$PROJECT_DIR$/ketone_days.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ketone_glucose.js" beforeDir="false" afterPath="$PROJECT_DIR$/ketone_glucose.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles.css" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +104,7 @@
       <workItem from="1570470352832" duration="3186000" />
       <workItem from="1570494638550" duration="6555000" />
       <workItem from="1570504308516" duration="19000" />
+      <workItem from="1570643458756" duration="3067000" />
     </task>
     <servers />
   </component>

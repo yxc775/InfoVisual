@@ -5,7 +5,13 @@
     const width = +svg.attr('width');
     const height = +svg.attr('height');
     const defaultColor = "steelblue";
-    const norm = "norm"
+    const norm = "norm";
+    var margin = {
+        top: 50,
+        right: 20,
+        bottom: 70,
+        left: 80
+    };
     svg.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
@@ -16,12 +22,7 @@
 
     const render = data => {
         const title = 'Glucose vs Ketone';
-        var margin = {
-            top: 50,
-            right: 20,
-            bottom: 70,
-            left: 80
-        }
+
         const innerWidth = width - margin.left - margin.right;
         const innerHeight = height - margin.top - margin.bottom;
 
@@ -30,6 +31,7 @@
         g.append('text')
             .attr('class', 'title')
             .attr('y', -10)
+            .attr('x',innerHeight / 2)
             .text(title);
 
         // axis
@@ -41,12 +43,15 @@
 
         const xScale = d3.scaleLinear()
             .domain(d3.extent(data, xValue))
+            //.domain([0, d3.max(data, function (d) {
+            //    return d.Blood_ketones_mg_per_dL + 5;
+            //})])
             .range([0, innerWidth]);
 
         const yScale = d3.scaleLinear()
             .domain(d3.extent(data, yValue))
             //.domain([0, d3.max(data, function (d) {
-            //    return d.Blood_glucose_mg_per_dL + 10;
+            //    return d.Blood_glucose_mg_per_dL + 5;
             //})])
             .range([innerHeight, 0]);
 
@@ -63,7 +68,7 @@
 
         yAxisG.append('text')
             .attr('class', 'axis-label')
-            .attr('y', -60)
+            .attr('y', -50)
             .attr('x', -innerHeight / 2)
             .attr('fill', 'black')
             .attr('transform', `rotate(-90)`)
@@ -77,7 +82,7 @@
 
         xAxisG.append('text')
             .attr('class', 'axis-label')
-            .attr('y', 80)
+            .attr('y', 60)
             .attr('x', innerWidth / 2)
             .attr('fill', 'black')
             .text(xAxisLabel);
@@ -236,8 +241,6 @@
 
         });
 
-
-
         function clearTableRows() {
 
             hideTableColNames();
@@ -245,20 +248,21 @@
         }
 
         function isBrushed(brush_coords, cx, cy) {
-            var x0 = brush_coords[0][0]-105,
-                x1 = brush_coords[1][0]-105,
-                y0 = brush_coords[0][1]-60,
-                y1 = brush_coords[1][1]-60;
+            var x0 = brush_coords[0][0]-margin.left,
+                x1 = brush_coords[1][0]-margin.left,
+                y0 = brush_coords[0][1]-margin.top,
+                y1 = brush_coords[1][1]-margin.top;
             return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
-
         }
 
         function hideTableColNames() {
             d3.select("table").style("visibility", "hidden");
+            d3.select(".scrollit").style("visibility", "hidden");
         }
 
         function showTableColNames() {
             d3.select("table").style("visibility", "visible");
+            d3.select(".scrollit").style("visibility", "visible");
         }
 
         function populateTableRow(d_row) {
@@ -266,6 +270,7 @@
             showTableColNames();
 
             var d_row_filter = [d_row.Patient_ID,
+                d_row.Days_on_PKT,
                 d_row.Blood_ketones_mg_per_dL,
                 d_row.Blood_glucose_mg_per_dL];
 
@@ -279,8 +284,6 @@
                 .attr("align", (d, i) => i === 0 ? "left" : "right")
                 .text(d => d);
         }
-
-
 
     }(d3));
 

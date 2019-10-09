@@ -40,6 +40,7 @@
     g.append('text')
               .attr('class', 'title')
               .attr('y', -10)
+              .attr('x',innerHeight / 2)
               .text(title);
     const slider = svg.append('g')
         .attr("class","slider")
@@ -85,7 +86,7 @@
 
     yAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('y', -40)
+        .attr('y', -50)
         .attr('x', -innerHeight / 2)
         .attr('fill', 'black')
         .attr('transform', `rotate(-90)`)
@@ -108,7 +109,7 @@
     xAxisG2.select('.domain').remove();
     xAxisG2.append('text')
         .attr('class', 'axis-label')
-        .attr('y', 50)
+        .attr('y', 60)
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
         .text(xAxisLabel);
