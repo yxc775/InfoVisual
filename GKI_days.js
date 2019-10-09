@@ -23,13 +23,13 @@
         top: 50,
         right: 20,
         bottom: 160,
-        left: 50
+        left: 80
     }
     var margin2 = {
         top: 410,
         right: 20,
         bottom: 70,
-        left: 50
+        left: 80
     }
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -85,7 +85,7 @@
 
     yAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('y', -60)
+        .attr('y', -40)
         .attr('x', -innerHeight / 2)
         .attr('fill', 'black')
         .attr('transform', `rotate(-90)`)
