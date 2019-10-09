@@ -16,7 +16,12 @@
 
     const render = data => {
         const title = 'Glucose vs Ketone';
-        const margin = {top: 60, right: 160, bottom: 88, left: 105};
+        var margin = {
+            top: 50,
+            right: 20,
+            bottom: 70,
+            left: 80
+        }
         const innerWidth = width - margin.left - margin.right;
         const innerHeight = height - margin.top - margin.bottom;
 

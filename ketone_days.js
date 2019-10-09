@@ -138,6 +138,13 @@
         .x(d => xScale(xValue(d)))
         .y(d => yScale(yValue(d)));
 
+    var clipPath = g.append("defs")
+        .append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", innerWidth)
+        .attr("height", innerHeight)
+
     lineset = g.selectAll('.line-path').data(nested)
     lineset.enter().append('path')
         .attr('class', 'line-path')
@@ -149,8 +156,7 @@
             ).attr("opacity",0.1);
             console.log("Patient: ", d.key);
             d3.event.stopPropagation();
-        })
-
+        }).attr("clip-path", "url(#clip)");
 
     // line-for slider
     const lineGenerator2 = d3.line()
