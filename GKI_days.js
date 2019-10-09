@@ -162,13 +162,6 @@
         .x(d => xScale(xValue(d)))
         .y(d => yScale2(yValue(d)));
 
-    lineset2 = slider.selectAll('.line-path').data(nested)
-
-    lineset2.enter().append('path')
-        .attr('class', 'line-path')
-        .attr('d', d => lineGenerator2(d.values))
-        .attr('stroke', d => colorScale(d.key))
-
     //brush function
     //create brush function redraw scatterplot with selection
    function brushed() {
