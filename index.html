@@ -10,11 +10,8 @@
 
   table {
     visibility: hidden;
-    position: absolute;
-    top: 500px;
-    left: 1800px;
     font-family: sans-serif;
-    font-size: 1.2em;
+    font-size: 1.4em;
   }
 
   tr:nth-child(even) {
@@ -56,10 +53,11 @@
     <script src="ketone_glucose.js"></script>
   </div>
   <!--table for data of brushed elements-->
-  <div id="table">
+  <div id="table" class="scrollit">
     <table>
       <tr>
         <th>Patient_ID</th>
+        <th>Days_on_PKT</th>
         <th>Glucose</th>
         <th>Ketone</th>
       </tr>
