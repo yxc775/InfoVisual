@@ -145,8 +145,7 @@
         .attr("width", innerWidth)
         .attr("height", innerHeight)
 
-    lineset = g.selectAll('.line-path').data(nested)
-    lineset.enter().append('path')
+    lineset = g.selectAll('.line-path').data(nested).enter().append('path')
         .attr('class', 'line-path')
         .attr('d', d => lineGenerator(d.values))
         .attr('stroke', d => colorScale(d.key))
