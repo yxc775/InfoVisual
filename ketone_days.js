@@ -73,6 +73,10 @@
       .tickSize(-innerHeight)
       .tickPadding(15);
 
+      var downscaley;
+      var downy =Math.NaN
+
+
     const xAxis2 = d3.axisBottom(xScale2)
         .tickSize(-innerHeight2)
         .tickPadding(15);
@@ -81,7 +85,30 @@
       .tickSize(-innerWidth)
       .tickPadding(10);
 
-    const yAxisG = g.append('g').call(yAxis);
+      const yAxisG = g.append('g')
+            .attr('class','axis--y')
+            .call(yAxis);
+
+      yAxisG.on("mousedown",function(){
+        var coordinates= d3.mouse(this);
+        downy = yScale.invert(coordinates[1]);
+        downscaley = yScale;
+      })
+      d3.select('#svg_ketone_days')
+              .on("mousemove", function(d) {
+                if (!isNaN(downy)) {
+                  var coordinates= d3.mouse(this);
+                  var rupx = coordinates[1];
+                  if (rupx != 0) {
+                    yScale.domain([downscaley.domain()[0],  innerHeight * (downy - downscaley.domain()[0]) / rupx + downscaley.domain()[0]]);
+                  }
+                  g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+                  g.selectAll(".axis--y").call(yAxis);
+                }
+              })
+              .on("mouseup", function(d) {
+                downy = Math.NaN;
+              });
     yAxisG.selectAll('.domain').remove();
 
     yAxisG.append('text')
