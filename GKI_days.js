@@ -42,6 +42,7 @@
               .attr('y', -10)
               .attr('x',innerHeight / 2)
               .text(title);
+    // 这部分是做出两个plot layout，一个在上面主图，一个在下面 对应slider
     const slider = svg.append('g')
         .attr("class","slider")
         .attr('transform', "translate(" + margin2.left + "," + margin2.top + ")");
@@ -73,7 +74,9 @@
       .tickSize(-innerHeight)
       .tickPadding(15);
 
+    //这部分是用downscaley对应yScale 部分，存储刚刚点击情况下(不包括拖拽和拖拽之后)，scale的信息)
     var downscaley;
+    //这部分是个动态数字，记录拖拽前对应原先scale状态的offset.
     var downy =Math.NaN
 
 
@@ -89,7 +92,7 @@
           .attr('class','axis--y')
           .call(yAxis);
 
-
+    // 这里触发拖拽，存储downscaley 原先状态
     yAxisG.on("mousedown",function(){
         var coordinates= d3.mouse(this);
         downy = yScale.invert(coordinates[1]);
@@ -98,12 +101,17 @@
 
     d3.select('#svg_GKI_days')
             .on("mousemove", function(d) {
+              //检测是否之前click了
               if (!isNaN(downy)) {
+                //记录鼠标位置
                 var coordinates= d3.mouse(this);
+                //提出纵坐标
                 var rupx = coordinates[1];
                 if (rupx != 0) {
+                  //这里进行一个对yscale的转换，但具体原理我还没完全弄懂，所以有bug
                   yScale.domain([downscaley.domain()[0],  innerHeight * (downy - downscaley.domain()[0]) / rupx + downscaley.domain()[0]]);
                 }
+                //这里是同时update 图像上的线和 y轴的字符
                 g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
                 g.selectAll(".axis--y").call(yAxis);
               }
@@ -142,7 +150,7 @@
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
         .text(xAxisLabel);
-
+  //这里是call一个brush function,具体原理不是很清楚,extent指代的是brush的起始坐标。
     brush = d3.brushX().extent([[0,0],[innerWidth,innerHeight2]]).on("brush end",brushed);
     slider.append("g")
           .attr("class","brush")
@@ -167,7 +175,7 @@
     const lineGenerator = d3.line()
         .x(d => xScale(xValue(d)))
         .y(d => yScale(yValue(d)));
-
+    //这里是为了解决图像冲出边界的问题，具体原理不清楚
         var clipPath = g.append("defs")
             .append("clipPath")
             .attr("id", "clip")
@@ -184,6 +192,7 @@
             console.log("Patient: ", d.key);
             d3.event.stopPropagation();
         })
+        //这个attr 某种方式通过id call 了clipPath那部分，具体原理不清楚
         .attr("clip-path", "url(#clip)");
 
 
@@ -194,11 +203,15 @@
 
     //brush function
     //create brush function redraw scatterplot with selection
+    //这里就是brush event下做的事
    function brushed() {
        var selection = d3.event.selection;
        if (selection !== null) {
+          //这段大概意思是记录并update 目前brush的状态
            e = d3.event.selection.map(xScale2.invert, xScale2);
+           //将主图片的x轴对应 brush的状态 update
            xScale.domain(e);
+           //这里是保持主图 x轴字符变化，和图的对应变化
            g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
            g.selectAll(".axis--x").call(xAxis);
        }
