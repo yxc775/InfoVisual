@@ -1,9 +1,15 @@
 (function (d3) {
   'use strict';
 
+  var lineset;
+  var lineset2;
+  var brush;
+  var e;
+  var data;
   const svg = d3.select('#svg_GKI_days');
   const width = +svg.attr('width');
   const height = +svg.attr('height');
+  const colorValue = d => d.Patient_ID;
 
   svg.append("rect")
       .attr("width", "100%")
@@ -13,97 +19,211 @@
   //
   const render = data => {
     const title = 'GKI vs Days on PKT';
-    const margin = { top: 60, right: 160, bottom: 88, left: 105 };
+    var margin = {
+        top: 50,
+        right: 20,
+        bottom: 160,
+        left: 80
+    }
+    var margin2 = {
+        top: 410,
+        right: 20,
+        bottom: 70,
+        left: 80
+    }
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
-
+    const innerHeight2 = height - margin2.top - margin2.bottom;
     const g = svg.append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
+            .attr("class","plot")
+            .attr('transform',  "translate(" + margin.left + "," + margin.top + ")");
     g.append('text')
-        .attr('class', 'title')
-        .attr('y', -10)
-        .text(title);
+              .attr('class', 'title')
+              .attr('y', -10)
+              .attr('x',innerHeight / 2)
+              .text(title);
+    // 这部分是做出两个plot layout，一个在上面主图，一个在下面 对应slider
+    const slider = svg.append('g')
+        .attr("class","slider")
+        .attr('transform', "translate(" + margin2.left + "," + margin2.top + ")");
 
     // axis
     const xValue = d => d.Days_on_PKT;
     const xAxisLabel = 'Days on PKT';
-    
+
     const yValue = d => d.GKI;
     const yAxisLabel = 'GKI';
-    
-    const xScale = d3.scaleLinear()
+
+    var xScale = d3.scaleLinear()
       .domain(d3.extent(data, xValue))
       .range([0, innerWidth]);
-    
+
+    const xScale2 = d3.scaleLinear()
+        .domain(d3.extent(data, xValue))
+        .range([0, innerWidth]);
+
     const yScale = d3.scaleLinear()
-        // .domain([0, 3])
       .domain(d3.extent(data, yValue))
       .range([innerHeight, 0]);
+
+    const yScale2 = d3.scaleLinear()
+          .domain(d3.extent(data, yValue))
+          .range([innerHeight2, 0]);
 
     const xAxis = d3.axisBottom(xScale)
       .tickSize(-innerHeight)
       .tickPadding(15);
-    
+
+    //这部分是用downscaley对应yScale 部分，存储刚刚点击情况下(不包括拖拽和拖拽之后)，scale的信息)
+    var downscaley;
+    //这部分是个动态数字，记录拖拽前对应原先scale状态的offset.
+    var downy =Math.NaN
+
+
+    const xAxis2 = d3.axisBottom(xScale2)
+        .tickSize(-innerHeight2)
+        .tickPadding(15);
+
     const yAxis = d3.axisLeft(yScale)
       .tickSize(-innerWidth)
-      .tickPadding(10);
-    
-    const yAxisG = g.append('g').call(yAxis);
+      .tickPadding(10)
+
+    const yAxisG = g.append('g')
+          .attr('class','axis--y')
+          .call(yAxis);
+
+    // 这里触发拖拽，存储downscaley 原先状态
+    yAxisG.on("mousedown",function(){
+        var coordinates= d3.mouse(this);
+        downy = yScale.invert(coordinates[1]);
+        downscaley = yScale;
+      })
+
+    d3.select('#svg_GKI_days')
+            .on("mousemove", function(d) {
+              //检测是否之前click了
+              if (!isNaN(downy)) {
+                //记录鼠标位置
+                var coordinates= d3.mouse(this);
+                //提出纵坐标
+                var rupx = coordinates[1];
+                if (rupx != 0) {
+                  //这里进行一个对yscale的转换，但具体原理我还没完全弄懂，所以有bug
+                  yScale.domain([downscaley.domain()[0],  innerHeight * (downy - downscaley.domain()[0]) / rupx + downscaley.domain()[0]]);
+                }
+                //这里是同时update 图像上的线和 y轴的字符
+                g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+                g.selectAll(".axis--y").call(yAxis);
+              }
+            })
+            .on("mouseup", function(d) {
+              downy = Math.NaN;
+            });
     yAxisG.selectAll('.domain').remove();
-    
+
     yAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('y', -60)
+        .attr('y', -50)
         .attr('x', -innerHeight / 2)
         .attr('fill', 'black')
         .attr('transform', `rotate(-90)`)
         .attr('text-anchor', 'middle')
         .text(yAxisLabel);
-    
-    const xAxisG = g.append('g').call(xAxis)
+
+    const xAxisG = g.append('g')
+      .attr('class','axis--x').call(xAxis)
       .attr('transform', `translate(0,${innerHeight})`);
-    
+
+    const xAxisG2 = slider.append('g').call(xAxis2)
+      .attr('transform', `translate(0,${innerHeight2})`);
+
     xAxisG.select('.domain').remove();
-    
     xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', 80)
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
+    xAxisG2.select('.domain').remove();
+    xAxisG2.append('text')
+        .attr('class', 'axis-label')
+        .attr('y', 60)
+        .attr('x', innerWidth / 2)
+        .attr('fill', 'black')
         .text(xAxisLabel);
+  //这里是call一个brush function,具体原理不是很清楚,extent指代的是brush的起始坐标。
+    brush = d3.brushX().extent([[0,0],[innerWidth,innerHeight2]]).on("brush end",brushed);
+    slider.append("g")
+          .attr("class","brush")
+          .call(brush)
+          .call(brush.move,xScale.range())
 
-    // line
-    const colorValue = d => d.Patient_ID;
+    // line-for plot
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-    
+
     const lastYValue = d =>
       yValue(d.values[d.values.length - 1]);
-    
-    const nested = d3.nest()
+
+    var nested = d3.nest()
       .key(colorValue)
       .entries(data)
       .sort((a, b) =>
         d3.descending(lastYValue(a), lastYValue(b))
       );
-    
+
     colorScale.domain(nested.map(d => d.key));
 
     const lineGenerator = d3.line()
         .x(d => xScale(xValue(d)))
         .y(d => yScale(yValue(d)));
+    //这里是为了解决图像冲出边界的问题，具体原理不清楚
+        var clipPath = g.append("defs")
+            .append("clipPath")
+            .attr("id", "clip")
+            .append("rect")
+            .attr("width", innerWidth)
+            .attr("height", innerHeight)
 
-    g.selectAll('.line-path').data(nested)
-      .enter().append('path')
+    lineset = g.selectAll('.line-path').data(nested).enter().append('path')
         .attr('class', 'line-path')
         .attr('d', d => lineGenerator(d.values))
-        .attr('stroke', d => colorScale(d.key));
+        .attr('stroke', d => colorScale(d.key))
+        .on("click", function(d){
+            lineset.filter(function(f){return f.key!= d.key}).attr("opacity",0.1);
+            console.log("Patient: ", d.key);
+            d3.event.stopPropagation();
+        })
+        //这个attr 某种方式通过id call 了clipPath那部分，具体原理不清楚
+        .attr("clip-path", "url(#clip)");
+
+
+    // line-for slider
+    const lineGenerator2 = d3.line()
+        .x(d => xScale(xValue(d)))
+        .y(d => yScale2(yValue(d)));
+
+    //brush function
+    //create brush function redraw scatterplot with selection
+    //这里就是brush event下做的事
+   function brushed() {
+       var selection = d3.event.selection;
+       if (selection !== null) {
+          //这段大概意思是记录并update 目前brush的状态
+           e = d3.event.selection.map(xScale2.invert, xScale2);
+           //将主图片的x轴对应 brush的状态 update
+           xScale.domain(e);
+           //这里是保持主图 x轴字符变化，和图的对应变化
+           g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+           g.selectAll(".axis--x").call(xAxis);
+       }
+   }
+
 
     // zoom
     var zoomed = false;
-    svg.on("click", function () {
+    svg.on("dblclick", function () {
       if (!zoomed) {
         svg.transition().duration(900)
-            .attr("transform", "scale(" + 2.2 + ") translate(" + width/3.6 + "," + -height/5 + ")");
+            .attr("transform", "translate(" + width/2 + "," + -height/2 + ") scale(" + 2 + ")" );
         zoomed = true;
         svg.raise();
       } else {
@@ -112,10 +232,15 @@
         zoomed = false;
       }
     })
+    .on("click",function(){
+       lineset.attr("opacity",1.0);
+    })
+
   };
 
   d3.csv("./test.csv")
-    .then(data => {
+    .then(
+      data => {
       data.forEach(d => {
         d.Days_on_PKT = +d.Days_on_PKT;
         d.GKI = +d.GKI;

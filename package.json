@@ -4,5 +4,6 @@
   },
   "devDependencies": {
     "rollup": "latest"
-  }
+  },
+
 }
