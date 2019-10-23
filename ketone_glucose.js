@@ -87,6 +87,38 @@
             .attr('fill', 'black')
             .text(xAxisLabel);
 
+        // circle
+        function handleMouseOver(d, i) {  // Add interactivity
+
+            // Use D3 to select element, change color and size
+            d3.select(this)
+                .attr("fill", "orange")
+                .attr("r", 5 * 2);
+            // Specify where to put label of text
+            svg.append("text")
+                .attr("id", "t" + d.Blood_ketones_mg_per_dL + "-" + d.Blood_glucose_mg_per_dL + "-" + i)
+                .attr("x", function () {
+                    return xScale(d.Blood_ketones_mg_per_dL) + 80
+                })
+                .attr("y", function () {
+                    return yScale(d.Blood_glucose_mg_per_dL) + 40
+                })
+                .text(function () {
+                    return [d.Blood_ketones_mg_per_dL, d.Blood_glucose_mg_per_dL];  // Value of the text
+                });
+
+
+        }
+
+        function handleMouseOut(d, i) {
+            // Use D3 to select element, change color back to normal
+            d3.select(this)
+                .attr("fill", defaultColor)
+                .attr("r", 5);
+            // Select text by id and then remove
+            d3.select("#t" + d.Blood_ketones_mg_per_dL + "-" + d.Blood_glucose_mg_per_dL + "-" + i).remove();  // Remove text location
+        }
+
          circleset = g.selectAll("circle")
             .data(data)
             .enter()
@@ -105,6 +137,15 @@
             .attr("fill", defaultColor)
             .attr("stroke", 0.5)
             .attr("stroke", "black")
+            .on("click", function (d) {
+                circleset.filter(function (f) {
+                    return (f.Blood_glucose_mg_per_dL !== d.Blood_glucose_mg_per_dL) || (f.Blood_ketones_mg_per_dL !== d.Blood_ketones_mg_per_dL)
+                }).attr("opacity", 0.1);
+                console.log("circle: ", d.Blood_glucose_mg_per_dL, ", ", d.Blood_ketones_mg_per_dL, ", ", d.Sex);
+                d3.event.stopPropagation();
+            })
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
 
 
         // zoom
@@ -181,7 +222,22 @@
             .on("brush", highlightBrushedCircles)
             .on("end", displayTable);
 
-        svg.append("g").call(brush);
+          if(localStorage.getItem("isbrushing") == "T"){
+            svg.append("g")
+            .call(brush);
+          }
+
+          $(window).on("keypress",function(d){
+            if(d.which == 32){
+              if(localStorage.getItem("isbrushing") == "F"){
+                localStorage.setItem("isbrushing","T");
+              }
+              else{
+                localStorage.setItem("isbrushing","F");
+              }
+              location.reload()
+            }
+          })
 
         });
 
