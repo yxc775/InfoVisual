@@ -205,7 +205,7 @@
     svg.on("dblclick", function () {
       if (!zoomed) {
         svg.transition().duration(900)
-            .attr("transform", "scale(" + 2.2 + ") translate(" + width/3.6 + "," + height/4 + ")");
+            .attr("transform", "translate(" + width/2 + "," + height/2 + ") scale(" + 2 + ")" );
         zoomed = true;
         svg.raise();
       } else {
