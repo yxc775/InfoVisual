@@ -4,7 +4,9 @@
   var lineset;
   var lineset2;
   var brush;
+  var brushy;
   var e;
+  var e2;
   var data;
   const svg = d3.select('#svg_glucouse_days');
   const width = +svg.attr('width');
@@ -23,15 +25,23 @@
         top: 50,
         right: 20,
         bottom: 160,
-        left: 80
+        left: 150
     }
     var margin2 = {
         top: 410,
         right: 20,
         bottom: 70,
+        left: 150
+    }
+
+    var margin3 = {
+        top: 50,
+        right: 860,
+        bottom: 160,
         left: 80
     }
     const innerWidth = width - margin.left - margin.right;
+    const innerWidth2 = width - margin3.left - margin3.right;
     const innerHeight = height - margin.top - margin.bottom;
     const innerHeight2 = height - margin2.top - margin2.bottom;
     const g = svg.append('g')
@@ -45,6 +55,9 @@
     const slider = svg.append('g')
         .attr("class","slider")
         .attr('transform', "translate(" + margin2.left + "," + margin2.top + ")");
+    const slidery = svg.append('g')
+        .attr("class","slider2")
+        .attr('transform', "translate(" + margin3.left + "," + margin3.top + ")");
 
     // axis
     const xValue = d => d.Days_on_PKT;
@@ -63,19 +76,15 @@
 
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, yValue))
-      .range([innerHeight, 0]);
+      .range([0,innerHeight]);
 
     const yScale2 = d3.scaleLinear()
-          .domain(d3.extent(data, yValue))
-          .range([innerHeight2, 0]);
+        .domain(d3.extent(data, yValue))
+        .range([innerHeight, 0]);
 
     const xAxis = d3.axisBottom(xScale)
       .tickSize(-innerHeight)
       .tickPadding(15);
-
-
-    var downscaley;
-    var downy =Math.NaN
 
     const xAxis2 = d3.axisBottom(xScale2)
         .tickSize(-innerHeight2)
@@ -85,14 +94,18 @@
       .tickSize(-innerWidth)
       .tickPadding(10);
 
+    const yAxis2 = d3.axisLeft(yScale2)
+        .tickSize(-innerWidth2)
+        .tickPadding(10);
+
       const yAxisG = g.append('g')
             .attr('class','axis--y')
-            .call(yAxis);
+            .call(yAxis)
 
+      const yAxisG2 = slidery.append('g')
+                  .call(yAxis2)
 
-      d3.select('#svg_glucouse_days');
-    yAxisG.selectAll('.domain').remove();
-
+    yAxisG.select('.domain').remove();
     yAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', -50)
@@ -100,7 +113,19 @@
         .attr('fill', 'black')
         .attr('transform', `rotate(-90)`)
         .attr('text-anchor', 'middle')
+//        .text(yAxisLabel);
+
+    yAxisG2.select('.domain').remove();
+    yAxisG2.append('text')
+        .attr('class', 'axis-label')
+        .attr('y', -50)
+        .attr('x', -innerHeight / 2)
+        .attr('fill', 'black')
+        .attr('transform', `rotate(-90)`)
+        .attr('text-anchor', 'middle')
         .text(yAxisLabel);
+
+
 
     const xAxisG = g.append('g')
       .attr('class','axis--x').call(xAxis)
@@ -122,12 +147,20 @@
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
         .text(xAxisLabel);
-
     brush = d3.brushX().extent([[0,0],[innerWidth,innerHeight2]]).on("brush end",brushed);
+    brushy = d3.brushY().extent([[0,0],[innerWidth2,innerHeight]]).on("brush end",brushedy);
+
     slider.append("g")
           .attr("class","brush")
           .call(brush)
           .call(brush.move,xScale.range())
+
+    slidery.append("g")
+           .attr("class","brushy")
+           .call(brushy)
+           .call(brushy.move,[0,290])
+
+
 
     // line-for plot
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -178,6 +211,17 @@
            g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
            g.selectAll(".axis--x").call(xAxis);
        }
+   }
+
+   function brushedy() {
+       var selection = d3.event.selection;
+       if (selection !== null) {
+           e2 = d3.event.selection.map(yScale2.invert,yScale2);
+           yScale.domain(e2);
+           g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+           g.selectAll(".axis--y").call(yAxis);
+       }
+
    }
 
 
