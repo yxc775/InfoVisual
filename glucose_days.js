@@ -89,27 +89,8 @@
             .attr('class','axis--y')
             .call(yAxis);
 
-      yAxisG.on("mousedown",function(){
-        var coordinates= d3.mouse(this);
-        downy = yScale.invert(coordinates[1]);
-        downscaley = yScale;
-      })
 
-      d3.select('#svg_glucouse_days')
-              .on("mousemove", function(d) {
-                if (!isNaN(downy)) {
-                  var coordinates= d3.mouse(this);
-                  var rupx = coordinates[1];
-                  if (rupx != 0) {
-                    yScale.domain([downscaley.domain()[0],  innerHeight * (downy - downscaley.domain()[0]) / rupx + downscaley.domain()[0]]);
-                  }
-                  g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
-                  g.selectAll(".axis--y").call(yAxis);
-                }
-              })
-              .on("mouseup", function(d) {
-                downy = Math.NaN;
-              });
+      d3.select('#svg_glucouse_days');
     yAxisG.selectAll('.domain').remove();
 
     yAxisG.append('text')

@@ -93,32 +93,7 @@
           .call(yAxis);
 
     // 这里触发拖拽，存储downscaley 原先状态
-    yAxisG.on("mousedown",function(){
-        var coordinates= d3.mouse(this);
-        downy = yScale.invert(coordinates[1]);
-        downscaley = yScale;
-      })
-
-    d3.select('#svg_GKI_days')
-            .on("mousemove", function(d) {
-              //检测是否之前click了
-              if (!isNaN(downy)) {
-                //记录鼠标位置
-                var coordinates= d3.mouse(this);
-                //提出纵坐标
-                var rupx = coordinates[1];
-                if (rupx != 0) {
-                  //这里进行一个对yscale的转换，但具体原理我还没完全弄懂，所以有bug
-                  yScale.domain([downscaley.domain()[0],  innerHeight * (downy - downscaley.domain()[0]) / rupx + downscaley.domain()[0]]);
-                }
-                //这里是同时update 图像上的线和 y轴的字符
-                g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
-                g.selectAll(".axis--y").call(yAxis);
-              }
-            })
-            .on("mouseup", function(d) {
-              downy = Math.NaN;
-            });
+    d3.select('#svg_GKI_days');
     yAxisG.selectAll('.domain').remove();
 
     yAxisG.append('text')
