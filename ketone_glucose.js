@@ -3,15 +3,32 @@
     var circleset;
     const svg = d3.select('#svg_ketone_glucose');
     const width = +svg.attr('width');
+    var e;
+    var e2;
+    var brushx;
+    var brushy;
     const height = +svg.attr('height');
     const defaultColor = "steelblue";
     const norm = "norm";
     var margin = {
         top: 50,
         right: 20,
+        bottom: 160,
+        left: 150
+    }
+    var margin2 = {
+        top: 410,
+        right: 20,
         bottom: 70,
+        left: 150
+    }
+
+    var margin3 = {
+        top: 50,
+        right: 860,
+        bottom: 160,
         left: 80
-    };
+    }
     svg.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
@@ -19,21 +36,28 @@
         .property("value", []);
 
     //
-
     const render = data => {
         const title = 'Glucose vs Ketone';
 
-        const innerWidth = width - margin.left - margin.right;
-        const innerHeight = height - margin.top - margin.bottom;
+            const innerWidth = width - margin.left - margin.right;
+            const innerWidth2 = width - margin3.left - margin3.right;
+            const innerHeight = height - margin.top - margin.bottom;
+            const innerHeight2 = height - margin2.top - margin2.bottom;
 
-        const g = svg.append('g')
-            .attr('transform', `translate(${margin.left},${margin.top})`);
-        g.append('text')
-            .attr('class', 'title')
-            .attr('y', -10)
-            .attr('x',innerHeight / 2)
-            .text(title);
-
+            const g = svg.append('g')
+                    .attr("class","plot")
+                    .attr('transform',  "translate(" + margin.left + "," + margin.top + ")");
+            g.append('text')
+                      .attr('class', 'title')
+                      .attr('y', -10)
+                      .attr('x',innerHeight / 2)
+                      .text(title);
+            const slider = svg.append('g')
+                .attr("class","slider")
+                .attr('transform', "translate(" + margin2.left + "," + margin2.top + ")");
+            const slidery = svg.append('g')
+                .attr("class","slider2")
+                .attr('transform', "translate(" + margin3.left + "," + margin3.top + ")");
         // axis
         const xValue = d => d.Blood_ketones_mg_per_dL;
         const xAxisLabel = 'Ketone (mg/dL)';
@@ -41,32 +65,57 @@
         const yValue = d => d.Blood_glucose_mg_per_dL;
         const yAxisLabel = 'Glucose (mg/dL)';
 
-        const xScale = d3.scaleLinear()
+        var xScale = d3.scaleLinear()
+          .domain(d3.extent(data, xValue))
+          .range([0, innerWidth]);
+
+        const xScale2 = d3.scaleLinear()
             .domain(d3.extent(data, xValue))
-            //.domain([0, d3.max(data, function (d) {
-            //    return d.Blood_ketones_mg_per_dL + 5;
-            //})])
             .range([0, innerWidth]);
 
         const yScale = d3.scaleLinear()
+          .domain(d3.extent(data, yValue))
+          .range([0,innerHeight]);
+
+        const yScale2 = d3.scaleLinear()
             .domain(d3.extent(data, yValue))
-            //.domain([0, d3.max(data, function (d) {
-            //    return d.Blood_glucose_mg_per_dL + 5;
-            //})])
             .range([innerHeight, 0]);
 
         const xAxis = d3.axisBottom(xScale)
-            .tickSize(-innerHeight)
+          .tickSize(-innerHeight)
+          .tickPadding(15);
+
+        const xAxis2 = d3.axisBottom(xScale2)
+            .tickSize(-innerHeight2)
             .tickPadding(15);
 
         const yAxis = d3.axisLeft(yScale)
-            .tickSize(-innerWidth)
+          .tickSize(-innerWidth)
+          .tickPadding(10);
+
+        const yAxis2 = d3.axisLeft(yScale2)
+            .tickSize(-innerWidth2)
             .tickPadding(10);
 
-        const yAxisG = g.append('g').call(yAxis);
-        yAxisG.selectAll('.domain').remove();
+          const yAxisG = g.append('g')
+                .attr('class','axis--y')
+                .call(yAxis)
 
+          const yAxisG2 = slidery.append('g')
+                      .call(yAxis2)
+
+        yAxisG.select('.domain').remove();
         yAxisG.append('text')
+            .attr('class', 'axis-label')
+            .attr('y', -50)
+            .attr('x', -innerHeight / 2)
+            .attr('fill', 'black')
+            .attr('transform', `rotate(-90)`)
+            .attr('text-anchor', 'middle')
+    //        .text(yAxisLabel);
+
+        yAxisG2.select('.domain').remove();
+        yAxisG2.append('text')
             .attr('class', 'axis-label')
             .attr('y', -50)
             .attr('x', -innerHeight / 2)
@@ -75,24 +124,53 @@
             .attr('text-anchor', 'middle')
             .text(yAxisLabel);
 
-        const xAxisG = g.append('g').call(xAxis)
-            .attr('transform', `translate(0,${innerHeight})`);
+
+
+        const xAxisG = g.append('g')
+          .attr('class','axis--x').call(xAxis)
+          .attr('transform', `translate(0,${innerHeight})`);
+
+        const xAxisG2 = slider.append('g').call(xAxis2)
+          .attr('transform', `translate(0,${innerHeight2})`);
 
         xAxisG.select('.domain').remove();
-
         xAxisG.append('text')
+            .attr('class', 'axis-label')
+            .attr('y', 80)
+            .attr('x', innerWidth / 2)
+            .attr('fill', 'black')
+        xAxisG2.select('.domain').remove();
+        xAxisG2.append('text')
             .attr('class', 'axis-label')
             .attr('y', 60)
             .attr('x', innerWidth / 2)
             .attr('fill', 'black')
             .text(xAxisLabel);
-
+        brushx = d3.brushX().extent([[0,0],[innerWidth,innerHeight2]]).on("brush end",brushed);
+        brushy = d3.brushY().extent([[0,0],[innerWidth2,innerHeight]]).on("brush end",brushedy);
         // circle
+
+        var clipPath = g.append("defs")
+            .append("clipPath")
+            .attr("id", "clip")
+            .append("rect")
+            .attr("width", innerWidth)
+            .attr("height", innerHeight)
+
+
+        var clipPathBrush = g.append("defs")
+                            .append("clipPath")
+                            .attr("id", "clipb")
+                            .append("rect")
+                            .attr("width", innerWidth)
+                            .attr("height", innerHeight)
+                            .attr('transform', `translate(${100},0)`);
 
          circleset = g.selectAll("circle")
             .data(data)
             .enter()
             .append("circle")
+            .attr('class','circle')
             .attr("cx", d => xScale(xValue(d)))
             .attr("cy", d => yScale(yValue(d)))
             .attr("r", 5)
@@ -100,6 +178,43 @@
             .attr("fill", defaultColor)
             .attr("stroke", 0.5)
             .attr("stroke", "black")
+            .attr("clip-path", "url(#clip)")
+
+            slider.append("g")
+                  .attr("class","brushx")
+                  .call(brushx)
+                  .call(brushx.move,xScale.range())
+
+            slidery.append("g")
+                   .attr("class","brushy")
+                   .call(brushy)
+                   .call(brushy.move,[0,290])
+
+                   function brushed() {
+                       var selection = d3.event.selection;
+                       if (selection !== null) {
+                           e = d3.event.selection.map(xScale2.invert, xScale2);
+                           xScale.domain(e);
+                           g.selectAll("circle")
+                           .attr("cx", d => xScale(xValue(d)))
+                           .attr("cy", d => yScale(yValue(d)));
+                           g.selectAll(".axis--x").call(xAxis);
+                       }
+                   }
+
+                   function brushedy() {
+                       var selection = d3.event.selection;
+                       if (selection !== null) {
+                           e2 = d3.event.selection.map(yScale2.invert,yScale2);
+                           yScale.domain(e2);
+                           g.selectAll("circle")
+                           .attr("cx", d => xScale(xValue(d)))
+                           .attr("cy", d => yScale(yValue(d)));
+                           g.selectAll(".axis--y").call(yAxis);
+                       }
+
+                   }
+
 
 
         // zoom
@@ -116,9 +231,6 @@
                 zoomed = false;
             }
         })
-            .on("click", function () {
-                circleset.attr("opacity", 1)
-            })
 
     };
 
@@ -177,11 +289,10 @@
             .on("end", displayTable);
 
             svg.append("g")
-            .call(brush);
-
-
-
+            .call(brush)
+            .attr("clip-path", "url(#clipb)")
         });
+
 
         function clearTableRows() {
 
