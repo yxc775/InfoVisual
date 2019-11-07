@@ -192,6 +192,7 @@
                     .attr("class", "tooltip")
                     .style("opacity", 0);
 
+
             lineset = g.selectAll('.line-path').data(nested).enter().append('path')
                 .attr('class', 'line-path')
                 .attr('d', d => lineGenerator(d.values))
@@ -255,6 +256,7 @@
           var str = $(".formulas").val();
           var arr = str.split(/[\>=\>\<=\<\!=\=]/);
           // console.log(arr);
+            if(arr.length > 1){
           lineset.filter(function(f){
               var left = arr[0];
               var leftArr = left.split(/[\*\+\/\-\(\)]/);
@@ -284,7 +286,10 @@
               return !showFiltered(str, left, right);
           })
               .attr("opacity",0.1);
-          d3.event.stopPropagation();
+            }
+            else{
+              lineset.attr("opacity",1);
+            }
       })
 
       function showFiltered(str, left, right) {
