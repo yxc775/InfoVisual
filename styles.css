@@ -47,6 +47,19 @@
   left: 30px;
 }
 
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 240px;
+    height: 112px;
+    padding: 2px;
+    font: 48px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
 body {
   margin: 0px;
   overflow: hidden;

@@ -2,7 +2,6 @@
   'use strict';
 
   var lineset;
-  var lineset2;
   var brush;
   var brushy;
   var e;
@@ -189,17 +188,28 @@
             .attr("height", innerHeight)
 
 
-    lineset = g.selectAll('.line-path').data(nested).enter().append('path')
-        .attr('class', 'line-path')
-        .attr('d', d => lineGenerator(d.values))
-        .attr('stroke', d => colorScale(d.key))
-        .on("click", function(d){
-            lineset.filter(function(f){return f.key!= d.key}).attr("opacity",0.1);
-            console.log("Patient: ", d.key);
-            d3.event.stopPropagation();
-        })
-        .attr("clip-path", "url(#clip)");
+            var tootip = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
 
+            lineset = g.selectAll('.line-path').data(nested).enter().append('path')
+                .attr('class', 'line-path')
+                .attr('d', d => lineGenerator(d.values))
+                .attr('stroke', d => colorScale(d.key))
+                .on("mouseover", function(d){
+                   tootip.transition()
+                       .duration(200)
+                       .style("opacity", .9);
+                   tootip.html("Patient " + d.key)
+                       .style("left", (d3.event.pageX) + "px")
+                       .style("top", (d3.event.pageY - 28) + "px");
+                   })
+                .on("mouseout", function(d) {
+                  tootip.transition()
+                             .duration(500)
+                             .style("opacity", 0);
+                })
+                .attr("clip-path", "url(#clip)")
 
     //brush function
     //create brush function redraw scatterplot with selection
@@ -237,9 +247,6 @@
             .attr("transform", "scale(" + 1 + ") translate(" + 0 + "," + 0 + ")");
         zoomed = false;
       }
-    })
-    .on("click",function(){
-       lineset.attr("opacity",1.0);
     })
 
 
