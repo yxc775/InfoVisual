@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<style>
+
+  text {
+    font-family: sans-serif;
+    fill: #000000;
+  }
+
+  table {
+    visibility: hidden;
+    font-family: sans-serif;
+    font-size: 1.4em;
+  }
+
+  tr:nth-child(even) {
+    background-color: #d9d9d9;
+  }
+
+  .brushed {
+    fill: #ff3399;
+    stroke: #8e1b54;
+    opacity: 0.8;
+  }
+
+  .non_brushed {
+    fill: steelblue;
+    opacity: 0.8;
+  }
+
+</style>
+  <head>
+    <title>G&K Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <!--<script src="d3.min.js"></script>-->
+
+    <link rel="stylesheet"
+          href="bootstrap-4.3.1-dist\css\bootstrap.min.css">
+    <link rel="stylesheet"
+          href="styles.css">
+    <script src = "jquery-3.4.1.min.js"></script>
+    <link rel = "stylesheet" type = "text/css"
+          herf = "bootstrap-4.3.1-dist\css\bootstrap.css">
+  </head>
+  <body  style = "overflow:scroll">
+
+  <div class = "heading">
+    <p class = "img">
+      <img src="logo.jpg" width="120" height="120" />
+    </p>
+    <div class = "img">
+      <div class = "webTitle">
+        G&K Explorer V0.1
+      </div>
+      <div class = "webSubtitle">
+        A Tool For PKT Research
+      </div>
+    </div>
+  </div>
+
+  <div class="board" onselectstart="return false;" unselectable="on">
+    <svg id = "svg_glucouse_days" width="960" height="500"></svg>
+    <script src="glucose_days.js"></script>
+
+    <svg id = "svg_ketone_days" width="960" height="500"></svg>
+    <script src="ketone_days.js"></script>
+
+    <svg id = "svg_GKI_days" width="960" height="500"></svg>
+    <script src="GKI_days.js"></script>
+
+    <svg id = "svg_ketone_glucose" width="960" height="500"></svg>
+    <script src="ketone_glucose.js"></script>
+  </div>
+  <!--table for data of brushed elements-->
+  <div id="table" class="scrollit">
+    <table>
+      <tr>
+        <th>Patient_ID</th>
+        <th>Days_on_PKT</th>
+        <th>Glucose</th>
+        <th>Ketone</th>
+      </tr>
+    </table>
+  </div>
+
+  <div class = "filters">
+    <p>Label &nbsp<input type="text"/></p>
+    <p><textarea class="formulas">(k1-k0)/(day1-day0)>0</textarea></p>
+    <p>glucose_days &nbsp<input class="submit_glucose_days" type="submit" value="Submit" /></p>
+    <p>ketone_days &nbsp<input class="submit_ketone_days" type="submit" value="Submit" /></p>
+    <p>GKI_days &nbsp<input class="submit_GKI_days" type="submit" value="Submit" /></p>
+  </div>
+
+  </body>
+</html>

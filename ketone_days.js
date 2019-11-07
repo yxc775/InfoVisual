@@ -1,9 +1,17 @@
 (function (d3) {
   'use strict';
 
+  var lineset;
+  var lineset2;
+  var brush;
+  var brushy;
+  var e;
+  var e2;
+  var data;
   const svg = d3.select('#svg_ketone_days');
   const width = +svg.attr('width');
   const height = +svg.attr('height');
+  const colorValue = d => d.Patient_ID;
 
   svg.append("rect")
       .attr("width", "100%")
@@ -12,97 +20,215 @@
 
   //
   const render = data => {
-    const title = 'Kenote vs Days on PKT';
-    const margin = { top: 60, right: 160, bottom: 88, left: 105 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
+    const title = 'Ketone vs Days on PKT';
+    var margin = {
+        top: 50,
+        right: 20,
+        bottom: 160,
+        left: 150
+    }
+    var margin2 = {
+        top: 410,
+        right: 20,
+        bottom: 70,
+        left: 150
+    }
 
+    var margin3 = {
+        top: 50,
+        right: 860,
+        bottom: 160,
+        left: 80
+    }
+    const innerWidth = width - margin.left - margin.right;
+    const innerWidth2 = width - margin3.left - margin3.right;
+    const innerHeight = height - margin.top - margin.bottom;
+    const innerHeight2 = height - margin2.top - margin2.bottom;
     const g = svg.append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
+            .attr("class","plot")
+            .attr('transform',  "translate(" + margin.left + "," + margin.top + ")");
     g.append('text')
-        .attr('class', 'title')
-        .attr('y', -10)
-        .text(title);
+              .attr('class', 'title')
+              .attr('y', -10)
+              .attr('x',innerHeight / 2)
+              .text(title);
+    const slider = svg.append('g')
+        .attr("class","slider")
+        .attr('transform', "translate(" + margin2.left + "," + margin2.top + ")");
+    const slidery = svg.append('g')
+        .attr("class","slider2")
+        .attr('transform', "translate(" + margin3.left + "," + margin3.top + ")");
 
     // axis
     const xValue = d => d.Days_on_PKT;
     const xAxisLabel = 'Days on PKT';
-    
-    const yValue = d => d.Blood_ketones_mg_per_dL;
-    const yAxisLabel = 'Kenote (mg/dL)';
 
-    const xScale = d3.scaleLinear()
+    const yValue = d => d.Blood_ketones_mg_per_dL;
+    const yAxisLabel = 'Ketone (mg/dL)';
+
+    var xScale = d3.scaleLinear()
       .domain(d3.extent(data, xValue))
       .range([0, innerWidth]);
-    
+
+    const xScale2 = d3.scaleLinear()
+        .domain(d3.extent(data, xValue))
+        .range([0, innerWidth]);
+
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, yValue))
-      .range([innerHeight, 0]);
+      .range([0,innerHeight]);
+
+    const yScale2 = d3.scaleLinear()
+        .domain(d3.extent(data, yValue))
+        .range([innerHeight, 0]);
 
     const xAxis = d3.axisBottom(xScale)
       .tickSize(-innerHeight)
       .tickPadding(15);
-    
+
+    const xAxis2 = d3.axisBottom(xScale2)
+        .tickSize(-innerHeight2)
+        .tickPadding(15);
+
     const yAxis = d3.axisLeft(yScale)
       .tickSize(-innerWidth)
       .tickPadding(10);
-    
-    const yAxisG = g.append('g').call(yAxis);
-    yAxisG.selectAll('.domain').remove();
-    
+
+    const yAxis2 = d3.axisLeft(yScale2)
+        .tickSize(-innerWidth2)
+        .tickPadding(10);
+
+      const yAxisG = g.append('g')
+            .attr('class','axis--y')
+            .call(yAxis)
+
+      const yAxisG2 = slidery.append('g')
+                  .call(yAxis2)
+
+    yAxisG.select('.domain').remove();
     yAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('y', -60)
+        .attr('y', -50)
+        .attr('x', -innerHeight / 2)
+        .attr('fill', 'black')
+        .attr('transform', `rotate(-90)`)
+        .attr('text-anchor', 'middle')
+//        .text(yAxisLabel);
+
+    yAxisG2.select('.domain').remove();
+    yAxisG2.append('text')
+        .attr('class', 'axis-label')
+        .attr('y', -50)
         .attr('x', -innerHeight / 2)
         .attr('fill', 'black')
         .attr('transform', `rotate(-90)`)
         .attr('text-anchor', 'middle')
         .text(yAxisLabel);
-    
-    const xAxisG = g.append('g').call(xAxis)
+
+
+
+    const xAxisG = g.append('g')
+      .attr('class','axis--x').call(xAxis)
       .attr('transform', `translate(0,${innerHeight})`);
-    
+
+    const xAxisG2 = slider.append('g').call(xAxis2)
+      .attr('transform', `translate(0,${innerHeight2})`);
+
     xAxisG.select('.domain').remove();
-    
     xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('y', 80)
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
+    xAxisG2.select('.domain').remove();
+    xAxisG2.append('text')
+        .attr('class', 'axis-label')
+        .attr('y', 60)
+        .attr('x', innerWidth / 2)
+        .attr('fill', 'black')
         .text(xAxisLabel);
+    brush = d3.brushX().extent([[0,0],[innerWidth,innerHeight2]]).on("brush end",brushed);
+    brushy = d3.brushY().extent([[0,0],[innerWidth2,innerHeight]]).on("brush end",brushedy);
 
-    // line
-    const colorValue = d => d.Patient_ID;
+    slider.append("g")
+          .attr("class","brush")
+          .call(brush)
+          .call(brush.move,xScale.range())
+
+    slidery.append("g")
+           .attr("class","brushy")
+           .call(brushy)
+           .call(brushy.move,[0,290])
+
+
+
+    // line-for plot
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-    
+
     const lastYValue = d =>
       yValue(d.values[d.values.length - 1]);
-    
-    const nested = d3.nest()
+
+    var nested = d3.nest()
       .key(colorValue)
       .entries(data)
       .sort((a, b) =>
         d3.descending(lastYValue(a), lastYValue(b))
       );
-    
+
     colorScale.domain(nested.map(d => d.key));
 
     const lineGenerator = d3.line()
         .x(d => xScale(xValue(d)))
         .y(d => yScale(yValue(d)));
 
-    g.selectAll('.line-path').data(nested)
-      .enter().append('path')
+        var clipPath = g.append("defs")
+            .append("clipPath")
+            .attr("id", "clip")
+            .append("rect")
+            .attr("width", innerWidth)
+            .attr("height", innerHeight)
+
+
+    lineset = g.selectAll('.line-path').data(nested).enter().append('path')
         .attr('class', 'line-path')
         .attr('d', d => lineGenerator(d.values))
-        .attr('stroke', d => colorScale(d.key));
+        .attr('stroke', d => colorScale(d.key))
+        .on("click", function(d){
+            lineset.filter(function(f){return f.key!= d.key}).attr("opacity",0.1);
+            console.log("Patient: ", d.key);
+            d3.event.stopPropagation();
+        })
+        .attr("clip-path", "url(#clip)")
+
+    //brush function
+    //create brush function redraw scatterplot with selectiodn
+   function brushed() {
+       var selection = d3.event.selection;
+       if (selection !== null) {
+           e = d3.event.selection.map(xScale2.invert, xScale2);
+           xScale.domain(e);
+           g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+           g.selectAll(".axis--x").call(xAxis);
+       }
+   }
+
+   function brushedy() {
+       var selection = d3.event.selection;
+       if (selection !== null) {
+           e2 = d3.event.selection.map(yScale2.invert,yScale2);
+           yScale.domain(e2);
+           g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+           g.selectAll(".axis--y").call(yAxis);
+       }
+
+   }
 
     // zoom
     var zoomed = false;
-    svg.on("click", function () {
+    svg.on("dblclick", function () {
       if (!zoomed) {
         svg.transition().duration(900)
-            .attr("transform", "scale(" + 2.2 + ") translate(" + -width/5.5 + "," + height/4 + ")");
+            .attr("transform", "translate(" + -width/2 + "," + height/2 + ") scale(" + 2 + ")" );
         zoomed = true;
         svg.raise();
       } else {
@@ -111,10 +237,117 @@
         zoomed = false;
       }
     })
+    .on("click",function(){
+       lineset.attr("opacity",1.0);
+    })
+
+    // flexible filter implementation
+    // submit button event
+    var submit = d3.select(".submit_ketone_days");
+    submit.on("click", function() {
+      var str = $(".formulas").val();
+      var arr = str.split(/[\>=\>\<=\<\!=\=]/);
+      // console.log(arr);
+      lineset.filter(function(f){
+          var left = arr[0];
+          var leftArr = left.split(/[\*\+\/\-\(\)]/);
+          var right = arr[arr.length - 1];
+          var rightArr = right.split(/[\*\+\/\-\(\)]/);
+          for (var i = 0; i < leftArr.length; i++) {
+              if (hasLetter(leftArr[i])) {
+                  var abbr = leftArr[i].match(/^[a-z|A-Z]+/gi);
+                  var index = leftArr[i].match(/\d+$/gi);
+                  left = left.replace(new RegExp(leftArr[i],'g'), strToVal(f, index, abbr));
+              }
+          }
+          // console.log(left);
+          for (let i = 0; i < rightArr.length; i++) {
+              if (hasLetter(rightArr[i])) {
+                  var abbr = rightArr[i].match(/^[a-z|A-Z]+/gi);
+                  var index = rightArr[i].match(/\d+$/gi);
+                  right = right.replace(new RegExp(rightArr[i], 'g'), strToVal(f, index, abbr));
+              }
+          }
+
+          // console.log(left);
+          // console.log(right);
+          // console.log(eval(left));
+          // console.log(eval(right));
+
+          return !showFiltered(str, left, right);
+      })
+          .attr("opacity",0.1);
+        d3.event.stopPropagation();
+    })
+
+      function showFiltered(str, left, right) {
+          if (str.match(">=") != null) {
+              return eval(left) >= eval(right);
+          }
+          if (str.match("<=") != null) {
+              return eval(left) <= eval(right);
+          }
+          if (str.match(">") != null) {
+              return eval(left) > eval(right);
+          }
+          if (str.match("<") != null) {
+              return eval(left) < eval(right);
+          }
+          if (str.match("!=") != null) {
+              // console.log(eval(left) === eval(right));
+              // console.log(eval(left));
+              // console.log(eval(right));
+              return eval(left) !== eval(right);
+          }
+          if (str.match("=") != null) {
+              return eval(left) === eval(right);
+          }
+          return false;
+      }
+
+    function strToVal(patient, index, abbr) {
+      var vals = patient.values[index];
+      if (abbr == "id") {
+          return vals.Patient_ID;
+      }
+      else if (abbr == "sex") {
+          return vals.Sex;
+      }
+      else if (abbr == "life") {
+          return vals.Day_of_Life;
+      }
+      else if (abbr == "day") {
+          return vals.Days_on_PKT;
+      }
+      else if (abbr == "g") {
+          return vals.Blood_glucose_mg_per_dL;
+      }
+      else if (abbr == "k") {
+          return vals.Blood_ketones_mg_per_dL;
+      }
+      else if (abbr == "index") {
+          return vals.GKI;
+      }
+      else {
+          return null;
+      }
+    }
+
+    function hasLetter(str) {
+      for (var i in str) {
+          var asc = str.charCodeAt(i);
+          if ((asc >= 65 && asc <= 90 || asc >= 97 && asc <= 122)) {
+              return true;
+          }
+      }
+      return false;
+    }
+
   };
 
   d3.csv("./test.csv")
-    .then(data => {
+    .then(
+      data => {
       data.forEach(d => {
         d.Days_on_PKT = +d.Days_on_PKT;
         d.Blood_ketones_mg_per_dL = +d.Blood_ketones_mg_per_dL;
