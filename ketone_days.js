@@ -154,7 +154,6 @@
           .attr("class","brush")
           .call(brush)
           .call(brush.move,xScale.range())
-<<<<<<< HEAD
 
     slidery.append("g")
            .attr("class","brushy")
@@ -162,15 +161,6 @@
            .call(brushy.move,[0,290])
 
 
-=======
-
-    slidery.append("g")
-           .attr("class","brushy")
-           .call(brushy)
-           .call(brushy.move,[0,290])
-
-
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
 
     // line-for plot
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -208,18 +198,10 @@
             console.log("Patient: ", d.key);
             d3.event.stopPropagation();
         })
-<<<<<<< HEAD
         .attr("clip-path", "url(#clip)")
 
     //brush function
     //create brush function redraw scatterplot with selectiodn
-=======
-        .attr("clip-path", "url(#clip)");
-
-
-    //brush function
-    //create brush function redraw scatterplot with selection
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
    function brushed() {
        var selection = d3.event.selection;
        if (selection !== null) {
@@ -240,21 +222,13 @@
        }
 
    }
-<<<<<<< HEAD
-=======
-
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
 
     // zoom
     var zoomed = false;
     svg.on("dblclick", function () {
       if (!zoomed) {
         svg.transition().duration(900)
-<<<<<<< HEAD
             .attr("transform", "translate(" + -width/2 + "," + height/2 + ") scale(" + 2 + ")" );
-=======
-            .attr("transform", "translate(" + width/2 + "," + height/2 + ") scale(" + 2 + ")" );
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
         zoomed = true;
         svg.raise();
       } else {
@@ -267,7 +241,6 @@
        lineset.attr("opacity",1.0);
     })
 
-<<<<<<< HEAD
     // flexible filter implementation
     // submit button event
     var submit = d3.select(".submit_ketone_days");
@@ -370,8 +343,6 @@
       return false;
     }
 
-=======
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
   };
 
   d3.csv("./test.csv")

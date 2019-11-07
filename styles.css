@@ -42,13 +42,8 @@
 }
 
 .board{
-<<<<<<< HEAD
   position: relative;
   top: 30px;
-=======
-  position: fixed;
-  top: 200px;
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
   left: 30px;
 }
 

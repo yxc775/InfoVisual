@@ -154,7 +154,6 @@
           .attr("class","brush")
           .call(brush)
           .call(brush.move,xScale.range())
-<<<<<<< HEAD
 
     slidery.append("g")
            .attr("class","brushy")
@@ -162,15 +161,6 @@
            .call(brushy.move,[0,290])
 
 
-=======
-
-    slidery.append("g")
-           .attr("class","brushy")
-           .call(brushy)
-           .call(brushy.move,[0,290])
-
-
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
 
     // line-for plot
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -233,21 +223,13 @@
        }
 
    }
-<<<<<<< HEAD
-=======
-
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
 
     // zoom
     var zoomed = false;
     svg.on("dblclick", function () {
       if (!zoomed) {
         svg.transition().duration(900)
-<<<<<<< HEAD
             .attr("transform", "translate(" + width/2 + "," + -height/2 + ") scale(" + 2 + ")" );
-=======
-            .attr("transform", "translate(" + width/2 + "," + height/2 + ") scale(" + 2 + ")" );
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
         zoomed = true;
         svg.raise();
       } else {
@@ -260,7 +242,6 @@
        lineset.attr("opacity",1.0);
     })
 
-<<<<<<< HEAD
 
       var submit = d3.select(".submit_GKI_days");
       submit.on("click", function() {
@@ -361,8 +342,6 @@
           }
           return false;
       }
-=======
->>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
   };
 
   d3.csv("./test.csv")
