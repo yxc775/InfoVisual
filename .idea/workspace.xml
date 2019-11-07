@@ -30,8 +30,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="1508">
               <caret line="91" selection-start-line="91" selection-end-line="91" />
+=======
+            <state relative-caret-position="488">
+              <caret line="119" column="6" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
             </state>
           </provider>
         </entry>
@@ -39,7 +44,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/styles.css">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="620">
+=======
+            <state relative-caret-position="320">
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
               <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
             </state>
           </provider>
@@ -48,7 +57,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bootstrap-4.3.1-dist/css/bootstrap.css">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="39440">
+=======
+            <state relative-caret-position="20">
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
               <caret line="1972" column="16" selection-start-line="1972" selection-start-column="1" selection-end-line="1972" selection-end-column="16" />
             </state>
           </provider>
@@ -71,8 +84,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/glucose_days.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="4040">
               <caret line="202" column="11" selection-start-line="202" selection-start-column="11" selection-end-line="202" selection-end-column="11" />
+=======
+            <state relative-caret-position="161">
+              <caret line="202" column="11" lean-forward="true" selection-start-line="202" selection-start-column="11" selection-end-line="202" selection-end-column="11" />
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
             </state>
           </provider>
         </entry>
@@ -80,7 +98,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ketone_days.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="4140">
+=======
+            <state relative-caret-position="240">
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
               <caret line="207" column="47" selection-start-line="207" selection-start-column="47" selection-end-line="207" selection-end-column="47" />
             </state>
           </provider>
@@ -89,7 +111,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GKI_days.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="4420">
+=======
+            <state relative-caret-position="180">
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
               <caret line="221" column="23" selection-start-line="221" selection-start-column="23" selection-end-line="221" selection-end-column="23" />
             </state>
           </provider>
@@ -98,7 +124,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ketone_glucose.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="3100">
+=======
+            <state relative-caret-position="260">
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
               <caret line="155" column="55" selection-start-line="155" selection-start-column="55" selection-end-line="155" selection-end-column="55" />
             </state>
           </provider>
@@ -148,8 +178,13 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="295" />
     <option name="y" value="35" />
+=======
+    <option name="x" value="490" />
+    <option name="y" value="116" />
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
     <option name="width" value="1110" />
     <option name="height" value="980" />
   </component>
@@ -160,7 +195,32 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
       <pane id="ProjectPane" />
+=======
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="InfoVisual-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InfoVisual-master" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InfoVisual-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InfoVisual-master" type="462c0819:PsiDirectoryNode" />
+              <item name="bootstrap-4.3.1-dist" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InfoVisual-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InfoVisual-master" type="462c0819:PsiDirectoryNode" />
+              <item name="bootstrap-4.3.1-dist" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
       <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
@@ -228,20 +288,33 @@
       <workItem from="1570643458756" duration="3067000" />
       <workItem from="1571631024652" duration="612000" />
       <workItem from="1571683774885" duration="13193000" />
+<<<<<<< HEAD
       <workItem from="1571703407168" duration="226000" />
       <workItem from="1571790338814" duration="607000" />
       <workItem from="1572549918255" duration="24000" />
       <workItem from="1572575754279" duration="599000" />
+=======
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="15261000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="236" y="28" width="888" height="784" extended-state="0" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.38795182" />
+=======
+    <option name="totallyTimeSpent" value="13805000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="393" y="94" width="888" height="784" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.35180724" />
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -347,6 +420,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1508">
@@ -372,6 +446,36 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
           <caret line="7" selection-start-line="7" selection-end-line="7" />
+=======
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap-4.3.1-dist/css/bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="1972" column="16" selection-start-line="1972" selection-start-column="1" selection-end-line="1972" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ketone_glucose.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="155" column="55" selection-start-line="155" selection-start-column="55" selection-end-line="155" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GKI_days.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="221" column="23" selection-start-line="221" selection-start-column="23" selection-end-line="221" selection-end-column="23" />
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
         </state>
       </provider>
     </entry>
@@ -380,6 +484,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/glucose_days.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="4040">
           <caret line="202" column="11" selection-start-line="202" selection-start-column="11" selection-end-line="202" selection-end-column="11" />
         </state>
@@ -403,6 +508,31 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3100">
           <caret line="155" column="55" selection-start-line="155" selection-start-column="55" selection-end-line="155" selection-end-column="55" />
+=======
+        <state relative-caret-position="240">
+          <caret line="207" column="47" selection-start-line="207" selection-start-column="47" selection-end-line="207" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/glucose_days.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="202" column="11" lean-forward="true" selection-start-line="202" selection-start-column="11" selection-end-line="202" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="119" column="6" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
         </state>
       </provider>
     </entry>

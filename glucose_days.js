@@ -212,6 +212,7 @@
            g.selectAll(".axis--x").call(xAxis);
        }
    }
+<<<<<<< HEAD
 
    function brushedy() {
        var selection = d3.event.selection;
@@ -224,6 +225,21 @@
 
    }
 
+=======
+
+   function brushedy() {
+       var selection = d3.event.selection;
+       if (selection !== null) {
+           e2 = d3.event.selection.map(yScale2.invert,yScale2);
+           yScale.domain(e2);
+           g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+           g.selectAll(".axis--y").call(yAxis);
+       }
+
+   }
+
+
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
     // zoom
     var zoomed = false;
     svg.on("dblclick", function () {
@@ -241,6 +257,7 @@
     .on("click",function(){
        lineset.attr("opacity",1.0);
     })
+<<<<<<< HEAD
 
 
       var submit = d3.select(".submit_glucose_days");
@@ -279,6 +296,8 @@
               .attr("opacity",0.1);
           d3.event.stopPropagation();
       })
+=======
+>>>>>>> 6bf70df9a326c4312771fa72d88e6d8e28689789
 
       function showFiltered(str, left, right) {
           if (str.match(">=") != null) {
