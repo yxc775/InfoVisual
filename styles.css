@@ -127,10 +127,11 @@ text {
 
 .filters {
   position: absolute;
-  top: 1250px;
-  left: 100px;
+  top: 1400px;
+  left: 950px;
   padding: 20px;
   border-style: solid;
   border-width: 2px;
   border-color: black;
+  transform: scale(2);
 }
