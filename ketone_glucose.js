@@ -29,14 +29,15 @@
         bottom: 160,
         left: 80
     }
-    svg.append("rect")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("fill", "white")
-        .property("value", []);
 
     //
     const render = data => {
+        svg.append("rect")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("fill", "white")
+            .property("value", []);
+
         const title = 'Glucose vs Ketone';
 
             const innerWidth = width - margin.left - margin.right;
@@ -293,6 +294,77 @@
             .attr("clip-path", "url(#clipb)")
         });
 
+    var fileInput = document.getElementById("xlf"),
+        readFile = function () {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var url1 = e.target.result;
+                //console.log(url1);
+                d3.csv(url1)
+                    .then(data => {
+                        data.forEach(d => {
+                            d.Blood_ketones_mg_per_dL = +d.Blood_ketones_mg_per_dL;
+                            d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
+                        });
+                        render(data);
+                        function highlightBrushedCircles() {
+
+                            if (d3.event.selection != null) {
+
+                                // revert circles to initial style
+                                circleset.attr("class", "non_brushed");
+
+                                var brush_coords = d3.brushSelection(this);
+
+                                // style brushed circles
+                                circleset.filter(function (){
+
+                                    var cx1 = d3.select(this).attr("cx"),
+                                        cy1 = d3.select(this).attr("cy");
+
+                                    return isBrushed(brush_coords, cx1, cy1);
+                                })
+                                    .attr("class", "brushed");
+                            }
+                        }
+
+
+                        function displayTable() {
+
+                            // disregard brushes w/o selections
+                            // ref: http://bl.ocks.org/mbostock/6232537
+                            if (!d3.event.selection) return;
+
+                            // programmed clearing of brush after mouse-up
+                            // ref: https://github.com/d3/d3-brush/issues/10
+                            d3.select(this).call(brush.move, null);
+
+                            var d_brushed = d3.selectAll(".brushed").data();
+
+                            // populate table if one or more elements is brushed
+                            if (d_brushed.length > 0) {
+                                clearTableRows();
+                                d_brushed.forEach(d_row => populateTableRow(d_row))
+                            } else {
+                                clearTableRows();
+                            }
+                        }
+
+                        var brush = d3.brush()
+                            .on("brush", highlightBrushedCircles)
+                            .on("end", displayTable);
+
+                        svg.append("g")
+                            .call(brush);
+                    });
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        };
+    fileInput.addEventListener('change', function(){
+        readFile();
+        //console.log('The data was changed!');
+    });
 
         function clearTableRows() {
 

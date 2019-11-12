@@ -12,14 +12,14 @@
   const height = +svg.attr('height');
   const colorValue = d => d.Patient_ID;
 
-  svg.append("rect")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .attr("fill", "white");
-
   //
   const render = data => {
-    const title = 'Glucose vs Days on PKT';
+      svg.append("rect")
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("fill", "white");
+
+      const title = 'Glucose vs Days on PKT';
     var margin = {
         top: 50,
         right: 20,
@@ -363,6 +363,29 @@
         d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
       });
       render(data);
+    });
+
+    var fileInput = document.getElementById("xlf"),
+        readFile = function () {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var url1 = e.target.result;
+                //console.log(url1);
+                d3.csv(url1)
+                    .then(data => {
+                        data.forEach(d => {
+                            d.Days_on_PKT = +d.Days_on_PKT;
+                            d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
+                        });
+                        render(data);
+                    });
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        };
+    fileInput.addEventListener('change', function(){
+        readFile();
+        //console.log('The data was changed!');
     });
 
 }(d3));
