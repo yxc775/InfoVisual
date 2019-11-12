@@ -12,284 +12,289 @@
   const height = +svg.attr('height');
   const colorValue = d => d.Patient_ID;
 
-  //
+  // background
+  svg.append("rect")
+      .attr("class", "rect_glusoce_days")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "white");
+
   const render = data => {
-      svg.append("rect")
-          .attr("width", "100%")
-          .attr("height", "100%")
-          .attr("fill", "white");
-
       const title = 'Glucose vs Days on PKT';
-    var margin = {
-        top: 50,
-        right: 20,
-        bottom: 160,
-        left: 150
-    }
-    var margin2 = {
-        top: 410,
-        right: 20,
-        bottom: 70,
-        left: 150
-    }
+      var margin = {
+          top: 50,
+          right: 20,
+          bottom: 160,
+          left: 150
+      }
+      var margin2 = {
+          top: 410,
+          right: 20,
+          bottom: 70,
+          left: 150
+      }
 
-    var margin3 = {
-        top: 50,
-        right: 860,
-        bottom: 160,
-        left: 80
-    }
-    const innerWidth = width - margin.left - margin.right;
-    const innerWidth2 = width - margin3.left - margin3.right;
-    const innerHeight = height - margin.top - margin.bottom;
-    const innerHeight2 = height - margin2.top - margin2.bottom;
-    const g = svg.append('g')
-            .attr("class","plot")
-            .attr('transform',  "translate(" + margin.left + "," + margin.top + ")");
-    g.append('text')
-              .attr('class', 'title')
-              .attr('y', -10)
-              .attr('x',innerHeight / 2)
-              .text(title);
-    const slider = svg.append('g')
-        .attr("class","slider")
-        .attr('transform', "translate(" + margin2.left + "," + margin2.top + ")");
-    const slidery = svg.append('g')
-        .attr("class","slider2")
-        .attr('transform', "translate(" + margin3.left + "," + margin3.top + ")");
+      var margin3 = {
+          top: 50,
+          right: 860,
+          bottom: 160,
+          left: 80
+      }
+      const innerWidth = width - margin.left - margin.right;
+      const innerWidth2 = width - margin3.left - margin3.right;
+      const innerHeight = height - margin.top - margin.bottom;
+      const innerHeight2 = height - margin2.top - margin2.bottom;
+      const g = svg.append('g')
+          .attr("class", "plot")
+          .attr('transform', "translate(" + margin.left + "," + margin.top + ")");
+      g.append('text')
+          .attr('class', 'title')
+          .attr('y', -10)
+          .attr('x', innerHeight / 2)
+          .text(title);
+      const slider = svg.append('g')
+          .attr("class", "slider")
+          .attr('transform', "translate(" + margin2.left + "," + margin2.top + ")");
+      const slidery = svg.append('g')
+          .attr("class", "slider2")
+          .attr('transform', "translate(" + margin3.left + "," + margin3.top + ")");
 
-    // axis
-    const xValue = d => d.Days_on_PKT;
-    const xAxisLabel = 'Days on PKT';
+      // axis
+      const xValue = d => d.Days_on_PKT;
+      const xAxisLabel = 'Days on PKT';
 
-    const yValue = d => d.Blood_glucose_mg_per_dL;
-    const yAxisLabel = 'Glucose (mg/dL)';
+      const yValue = d => d.Blood_glucose_mg_per_dL;
+      const yAxisLabel = 'Glucose (mg/dL)';
 
-    var xScale = d3.scaleLinear()
-      .domain(d3.extent(data, xValue))
-      .range([0, innerWidth]);
+      var xScale = d3.scaleLinear()
+          .domain(d3.extent(data, xValue))
+          .range([0, innerWidth]);
 
-    const xScale2 = d3.scaleLinear()
-        .domain(d3.extent(data, xValue))
-        .range([0, innerWidth]);
+      const xScale2 = d3.scaleLinear()
+          .domain(d3.extent(data, xValue))
+          .range([0, innerWidth]);
 
-    const yScale = d3.scaleLinear()
-      .domain(d3.extent(data, yValue))
-      .range([0,innerHeight]);
+      const yScale = d3.scaleLinear()
+          .domain(d3.extent(data, yValue))
+          .range([0, innerHeight]);
 
-    const yScale2 = d3.scaleLinear()
-        .domain(d3.extent(data, yValue))
-        .range([innerHeight, 0]);
+      const yScale2 = d3.scaleLinear()
+          .domain(d3.extent(data, yValue))
+          .range([innerHeight, 0]);
 
-    const xAxis = d3.axisBottom(xScale)
-      .tickSize(-innerHeight)
-      .tickPadding(15);
+      const xAxis = d3.axisBottom(xScale)
+          .tickSize(-innerHeight)
+          .tickPadding(15);
 
-    const xAxis2 = d3.axisBottom(xScale2)
-        .tickSize(-innerHeight2)
-        .tickPadding(15);
+      const xAxis2 = d3.axisBottom(xScale2)
+          .tickSize(-innerHeight2)
+          .tickPadding(15);
 
-    const yAxis = d3.axisLeft(yScale)
-      .tickSize(-innerWidth)
-      .tickPadding(10);
+      const yAxis = d3.axisLeft(yScale)
+          .tickSize(-innerWidth)
+          .tickPadding(10);
 
-    const yAxis2 = d3.axisLeft(yScale2)
-        .tickSize(-innerWidth2)
-        .tickPadding(10);
+      const yAxis2 = d3.axisLeft(yScale2)
+          .tickSize(-innerWidth2)
+          .tickPadding(10);
 
       const yAxisG = g.append('g')
-            .attr('class','axis--y')
-            .call(yAxis)
+          .attr('class', 'axis--y')
+          .call(yAxis)
 
       const yAxisG2 = slidery.append('g')
-                  .call(yAxis2)
+          .call(yAxis2)
 
-    yAxisG.select('.domain').remove();
-    yAxisG.append('text')
-        .attr('class', 'axis-label')
-        .attr('y', -50)
-        .attr('x', -innerHeight / 2)
-        .attr('fill', 'black')
-        .attr('transform', `rotate(-90)`)
-        .attr('text-anchor', 'middle')
+      yAxisG.select('.domain').remove();
+      yAxisG.append('text')
+          .attr('class', 'axis-label')
+          .attr('y', -50)
+          .attr('x', -innerHeight / 2)
+          .attr('fill', 'black')
+          .attr('transform', `rotate(-90)`)
+          .attr('text-anchor', 'middle')
 //        .text(yAxisLabel);
 
-    yAxisG2.select('.domain').remove();
-    yAxisG2.append('text')
-        .attr('class', 'axis-label')
-        .attr('y', -50)
-        .attr('x', -innerHeight / 2)
-        .attr('fill', 'black')
-        .attr('transform', `rotate(-90)`)
-        .attr('text-anchor', 'middle')
-        .text(yAxisLabel);
+      yAxisG2.select('.domain').remove();
+      yAxisG2.append('text')
+          .attr('class', 'axis-label')
+          .attr('y', -50)
+          .attr('x', -innerHeight / 2)
+          .attr('fill', 'black')
+          .attr('transform', `rotate(-90)`)
+          .attr('text-anchor', 'middle')
+          .text(yAxisLabel);
 
 
+      const xAxisG = g.append('g')
+          .attr('class', 'axis--x').call(xAxis)
+          .attr('transform', `translate(0,${innerHeight})`);
 
-    const xAxisG = g.append('g')
-      .attr('class','axis--x').call(xAxis)
-      .attr('transform', `translate(0,${innerHeight})`);
+      const xAxisG2 = slider.append('g').call(xAxis2)
+          .attr('transform', `translate(0,${innerHeight2})`);
 
-    const xAxisG2 = slider.append('g').call(xAxis2)
-      .attr('transform', `translate(0,${innerHeight2})`);
+      xAxisG.select('.domain').remove();
+      xAxisG.append('text')
+          .attr('class', 'axis-label')
+          .attr('y', 80)
+          .attr('x', innerWidth / 2)
+          .attr('fill', 'black')
+      xAxisG2.select('.domain').remove();
+      xAxisG2.append('text')
+          .attr('class', 'axis-label')
+          .attr('y', 60)
+          .attr('x', innerWidth / 2)
+          .attr('fill', 'black')
+          .text(xAxisLabel);
+      brush = d3.brushX().extent([[0, 0], [innerWidth, innerHeight2]]).on("brush end", brushed);
+      brushy = d3.brushY().extent([[0, 0], [innerWidth2, innerHeight]]).on("brush end", brushedy);
 
-    xAxisG.select('.domain').remove();
-    xAxisG.append('text')
-        .attr('class', 'axis-label')
-        .attr('y', 80)
-        .attr('x', innerWidth / 2)
-        .attr('fill', 'black')
-    xAxisG2.select('.domain').remove();
-    xAxisG2.append('text')
-        .attr('class', 'axis-label')
-        .attr('y', 60)
-        .attr('x', innerWidth / 2)
-        .attr('fill', 'black')
-        .text(xAxisLabel);
-    brush = d3.brushX().extent([[0,0],[innerWidth,innerHeight2]]).on("brush end",brushed);
-    brushy = d3.brushY().extent([[0,0],[innerWidth2,innerHeight]]).on("brush end",brushedy);
-
-    slider.append("g")
-          .attr("class","brush")
+      slider.append("g")
+          .attr("class", "brush")
           .call(brush)
-          .call(brush.move,xScale.range())
+          .call(brush.move, xScale.range())
 
-    slidery.append("g")
-           .attr("class","brushy")
-           .call(brushy)
-           .call(brushy.move,[0,290])
-
-
-
-    // line-for plot
-    const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
-    const lastYValue = d =>
-      yValue(d.values[d.values.length - 1]);
-
-    var nested = d3.nest()
-      .key(colorValue)
-      .entries(data)
-      .sort((a, b) =>
-        d3.descending(lastYValue(a), lastYValue(b))
-      );
-
-    colorScale.domain(nested.map(d => d.key));
-
-    const lineGenerator = d3.line()
-        .x(d => xScale(xValue(d)))
-        .y(d => yScale(yValue(d)));
-
-        var clipPath = g.append("defs")
-            .append("clipPath")
-            .attr("id", "clip")
-            .append("rect")
-            .attr("width", innerWidth)
-            .attr("height", innerHeight)
-
-            var tootip = d3.select("body").append("div")
-                    .attr("class", "tooltip")
-                    .style("opacity", 0);
-
-            lineset = g.selectAll('.line-path').data(nested).enter().append('path')
-                .attr('class', 'line-path')
-                .attr('d', d => lineGenerator(d.values))
-                .attr('stroke', d => colorScale(d.key))
-                .on("mouseover", function(d){
-                   tootip.transition()
-                       .duration(200)
-                       .style("opacity", .9);
-                   tootip.html("Patient " + d.key)
-                       .style("left", (d3.event.pageX) + "px")
-                       .style("top", (d3.event.pageY - 28) + "px");
-                   })
-                .on("mouseout", function(d) {
-                  tootip.transition()
-                             .duration(500)
-                             .style("opacity", 0);
-                })
-                .attr("clip-path", "url(#clip)")
+      slidery.append("g")
+          .attr("class", "brushy")
+          .call(brushy)
+          .call(brushy.move, [0, 290])
 
 
-    //brush function
-    //create brush function redraw scatterplot with selection
-   function brushed() {
-       var selection = d3.event.selection;
-       if (selection !== null) {
-           e = d3.event.selection.map(xScale2.invert, xScale2);
-           xScale.domain(e);
-           g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
-           g.selectAll(".axis--x").call(xAxis);
-       }
-   }
+      // line-for plot
+      const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-   function brushedy() {
-       var selection = d3.event.selection;
-       if (selection !== null) {
-           e2 = d3.event.selection.map(yScale2.invert,yScale2);
-           yScale.domain(e2);
-           g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
-           g.selectAll(".axis--y").call(yAxis);
-       }
+      const lastYValue = d =>
+          yValue(d.values[d.values.length - 1]);
 
-   }
+      var nested = d3.nest()
+          .key(colorValue)
+          .entries(data)
+          .sort((a, b) =>
+              d3.descending(lastYValue(a), lastYValue(b))
+          );
 
-    // zoom
-    var zoomed = false;
-    svg.on("dblclick", function () {
-      if (!zoomed) {
-        svg.transition().duration(900)
-            .attr("transform", "translate(" + width/2 + "," + height/2 + ") scale(" + 2 + ")" );
-        zoomed = true;
-        svg.raise();
-      } else {
-        svg.transition().duration(900)
-            .attr("transform", "scale(" + 1 + ") translate(" + 0 + "," + 0 + ")");
-        zoomed = false;
-      }
-    })
+      colorScale.domain(nested.map(d => d.key));
 
+      const lineGenerator = d3.line()
+          .x(d => xScale(xValue(d)))
+          .y(d => yScale(yValue(d)));
 
-      var submit = d3.select(".submit_glucose_days");
-      submit.on("click", function() {
-          var str = $(".formulas").val();
-          var arr = str.split(/[\>=\>\<=\<\!=\=]/);
-          // console.log(arr);
-          if(arr.length > 1){
-          lineset.filter(function(f){
-              var left = arr[0];
-              var leftArr = left.split(/[\*\+\/\-\(\)]/);
-              var right = arr[arr.length - 1];
-              var rightArr = right.split(/[\*\+\/\-\(\)]/);
-              for (var i = 0; i < leftArr.length; i++) {
-                  if (hasLetter(leftArr[i])) {
-                      var abbr = leftArr[i].match(/^[a-z|A-Z]+/gi);
-                      var index = leftArr[i].match(/\d+$/gi);
-                      left = left.replace(new RegExp(leftArr[i],'g'), strToVal(f, index, abbr));
-                  }
-              }
-              // console.log(left);
-              for (let i = 0; i < rightArr.length; i++) {
-                  if (hasLetter(rightArr[i])) {
-                      var abbr = rightArr[i].match(/^[a-z|A-Z]+/gi);
-                      var index = rightArr[i].match(/\d+$/gi);
-                      right = right.replace(new RegExp(rightArr[i], 'g'), strToVal(f, index, abbr));
-                  }
-              }
+      var clipPath = g.append("defs")
+          .append("clipPath")
+          .attr("id", "clip")
+          .append("rect")
+          .attr("width", innerWidth)
+          .attr("height", innerHeight)
 
-              // console.log(left);
-              // console.log(right);
-              // console.log(eval(left));
-              // console.log(eval(right));
+      var tootip = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
 
-              return !showFiltered(str, left, right);
+      lineset = g.selectAll('.line-path').data(nested).enter().append('path')
+          .attr('class', 'line-path')
+          .attr('d', d => lineGenerator(d.values))
+          .attr('stroke', d => colorScale(d.key))
+          .on("mouseover", function (d) {
+              tootip.transition()
+                  .duration(200)
+                  .style("opacity", .9);
+              tootip.html("Patient " + d.key)
+                  .style("left", (d3.event.pageX) + "px")
+                  .style("top", (d3.event.pageY - 28) + "px");
           })
-              .attr("opacity",0.1);
+          .on("mouseout", function (d) {
+              tootip.transition()
+                  .duration(500)
+                  .style("opacity", 0);
+          })
+          .attr("clip-path", "url(#clip)")
+
+
+      //brush function
+      //create brush function redraw scatterplot with selection
+      function brushed() {
+          var selection = d3.event.selection;
+          if (selection !== null) {
+              e = d3.event.selection.map(xScale2.invert, xScale2);
+              xScale.domain(e);
+              g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+              g.selectAll(".axis--x").call(xAxis);
           }
-          else{
-              lineset.attr("opacity",1);
+      }
+
+      function brushedy() {
+          var selection = d3.event.selection;
+          if (selection !== null) {
+              e2 = d3.event.selection.map(yScale2.invert, yScale2);
+              yScale.domain(e2);
+              g.selectAll(".line-path").attr("d", d => lineGenerator(d.values));
+              g.selectAll(".axis--y").call(yAxis);
+          }
+      }
+
+      // zoom
+      var zoomed = false;
+      svg.on("dblclick", function () {
+          if (!zoomed) {
+              svg.transition().duration(900)
+                  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(" + 2 + ")");
+              zoomed = true;
+              svg.raise();
+          } else {
+              svg.transition().duration(900)
+                  .attr("transform", "scale(" + 1 + ") translate(" + 0 + "," + 0 + ")");
+              zoomed = false;
           }
       })
+
+      // filter part
+      var submit = d3.select(".submit_glucose_days");
+      submit.on("click", handleFilters)
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
+
+      function handleFilters() {
+          // get formula from input as string & delete spaces
+          var id = +$(this).attr("id") + 48;
+          console.log(id);
+          var str = $("#"+id).val().replace(/\s/g, '');
+          // split into formulas
+          var formulas = str.split(/\&/);
+          lineset.filter(function (f) {
+              for (var i = 0; i < formulas.length; i++) {
+                  var formula = formulas[i];
+                  if (handleSingleFormula(formula, f)) {
+                      return true;
+                  }
+              }
+              return false;
+          })
+              .attr("opacity", 0.1);
+      }
+
+      function handleSingleFormula(formula, f) {
+          var arr = formula.split(/[\>=\>\<=\<\!=\=]/);
+          var left = arr[0];
+          var leftArr = left.split(/[\*\+\/\-\(\)]/);
+          var right = arr[arr.length - 1];
+          var rightArr = right.split(/[\*\+\/\-\(\)]/);
+          for (var i = 0; i < leftArr.length; i++) {
+              if (hasLetter(leftArr[i])) {
+                  var abbr = leftArr[i].match(/^[a-z|A-Z]+/gi);
+                  var index = leftArr[i].match(/\d+$/gi);
+                  left = left.replace(new RegExp(leftArr[i], 'g'), strToVal(f, index, abbr));
+              }
+          }
+          for (let i = 0; i < rightArr.length; i++) {
+              if (hasLetter(rightArr[i])) {
+                  var abbr = rightArr[i].match(/^[a-z|A-Z]+/gi);
+                  var index = rightArr[i].match(/\d+$/gi);
+                  right = right.replace(new RegExp(rightArr[i], 'g'), strToVal(f, index, abbr));
+              }
+          }
+
+          return !showFiltered(formula, left, right);
+      }
 
       function showFiltered(str, left, right) {
           if (str.match(">=") != null) {
@@ -305,9 +310,6 @@
               return eval(left) < eval(right);
           }
           if (str.match("!=") != null) {
-              // console.log(eval(left) === eval(right));
-              // console.log(eval(left));
-              // console.log(eval(right));
               return eval(left) !== eval(right);
           }
           if (str.match("=") != null) {
@@ -320,26 +322,19 @@
           var vals = patient.values[index];
           if (abbr == "id") {
               return vals.Patient_ID;
-          }
-          else if (abbr == "sex") {
+          } else if (abbr == "sex") {
               return vals.Sex;
-          }
-          else if (abbr == "life") {
+          } else if (abbr == "life") {
               return vals.Day_of_Life;
-          }
-          else if (abbr == "day") {
+          } else if (abbr == "day") {
               return vals.Days_on_PKT;
-          }
-          else if (abbr == "g") {
+          } else if (abbr == "g") {
               return vals.Blood_glucose_mg_per_dL;
-          }
-          else if (abbr == "k") {
+          } else if (abbr == "k") {
               return vals.Blood_ketones_mg_per_dL;
-          }
-          else if (abbr == "index") {
+          } else if (abbr == "index") {
               return vals.GKI;
-          }
-          else {
+          } else {
               return null;
           }
       }
@@ -353,7 +348,49 @@
           }
           return false;
       }
-  };
+
+      // reset button
+      var reset = d3.select(".reset_glucose_days");
+      reset.on("click", handleReset)
+          .on("mouseover", handleMouseOver)
+          .on("mouseout", handleMouseOut);
+
+      function handleReset() {
+          lineset.attr("opacity", 1);
+      }
+
+      function handleMouseOver() {
+          d3.select('.rect_glusoce_days').attr("fill", "silver");
+      }
+
+      function handleMouseOut() {
+          d3.select(".rect_glusoce_days").attr("fill", "white");
+      }
+
+      var index = 1;
+      d3.select("#newFilter").on("click", function() {
+          if (index <= 16) {
+              var origin = d3.select(".filter");
+              var copy = origin.clone(true).attr("transform", "translate(0,100)");
+              index++;
+              copy.select(".formulas").attr("id", index + 48);
+              copy.select(".submit_glucose_days").attr("id", index);
+              copy.select(".submit_ketone_days").attr("id", index+16);
+              copy.select(".submit_GKI_days").attr("id", index+32);
+              d3.selectAll(".submit_glucose_days")
+                  .on("click", handleFilters)
+                  .on("mouseover", handleMouseOver)
+                  .on("mouseout", handleMouseOut);
+              d3.selectAll(".reset_glucose_days")
+                  .on("click", handleReset)
+                  .on("mouseover", handleMouseOver)
+                  .on("mouseout", handleMouseOut);
+          } else {
+              alert("More than 16 filters!")
+          }
+
+      })
+  }
 
   d3.csv("./test.csv")
     .then(
@@ -363,29 +400,6 @@
         d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
       });
       render(data);
-    });
-
-    var fileInput = document.getElementById("xlf"),
-        readFile = function () {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                var url1 = e.target.result;
-                //console.log(url1);
-                d3.csv(url1)
-                    .then(data => {
-                        data.forEach(d => {
-                            d.Days_on_PKT = +d.Days_on_PKT;
-                            d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
-                        });
-                        render(data);
-                    });
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-        };
-    fileInput.addEventListener('change', function(){
-        readFile();
-        //console.log('The data was changed!');
     });
 
 }(d3));

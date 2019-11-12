@@ -127,11 +127,30 @@ text {
 
 .filters {
   position: absolute;
-  top: 1400px;
-  left: 300px;
+  top: 1250px;
+  left: 20px;
+}
+
+.filter {
+  position: relative;
+  display: inline-block;
   padding: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
   border-style: solid;
-  border-width: 2px;
-  border-color: black;
-  transform: scale(2);
+  border-width: 3px;
+  border-color: steelblue;
+  border-radius: 30px;
+}
+
+#newFilter{
+  position: absolute;
+  top: 1200px;
+  left: 50px;
+  font-size: x-large;
+}
+
+.purple-border .form-control:focus {
+  border: 1px solid #ba68c8;
+  box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
 }

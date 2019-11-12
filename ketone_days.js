@@ -12,13 +12,14 @@
   const height = +svg.attr('height');
   const colorValue = d => d.Patient_ID;
 
+  svg.append("rect")
+      .attr("class", "rect_ketone_days")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "white");
+
   //
   const render = data => {
-      svg.append("rect")
-          .attr("width", "100%")
-          .attr("height", "100%")
-          .attr("fill", "white");
-
     const title = 'Ketone vs Days on PKT';
     var margin = {
         top: 50,
@@ -248,15 +249,33 @@
       }
     })
 
-    // flexible filter implementation
-    // submit button event
-    var submit = d3.select(".submit_ketone_days");
-    submit.on("click", function() {
-      var str = $(".formulas").val();
-      var arr = str.split(/[\>=\>\<=\<\!=\=]/);
-      // console.log(arr);
-      if(arr.length > 1){
-      lineset.filter(function(f){
+      // filter part
+      var submit = d3.select(".submit_ketone_days");
+      submit.on("click", handleFilters)
+          .on("mouseover", handleMouseOver)
+          .on("mouseout", handleMouseOut);
+
+      function handleFilters() {
+          // get formula from input as string
+          // delete spaces
+          var id = +$(this).attr("id") + 32;
+          var str = $("#"+id).val().replace(/\s/g, '');
+          // split into formulas
+          var formulas = str.split(/\&/);
+          lineset.filter(function (f) {
+              for (var i = 0; i < formulas.length; i++) {
+                  var formula = formulas[i];
+                  if (handleSingleFormula(formula, f)) {
+                      return true;
+                  }
+              }
+              return false;
+          })
+              .attr("opacity", 0.1);
+      }
+
+      function handleSingleFormula(formula, f) {
+          var arr = formula.split(/[\>=\>\<=\<\!=\=]/);
           var left = arr[0];
           var leftArr = left.split(/[\*\+\/\-\(\)]/);
           var right = arr[arr.length - 1];
@@ -265,10 +284,9 @@
               if (hasLetter(leftArr[i])) {
                   var abbr = leftArr[i].match(/^[a-z|A-Z]+/gi);
                   var index = leftArr[i].match(/\d+$/gi);
-                  left = left.replace(new RegExp(leftArr[i],'g'), strToVal(f, index, abbr));
+                  left = left.replace(new RegExp(leftArr[i], 'g'), strToVal(f, index, abbr));
               }
           }
-          // console.log(left);
           for (let i = 0; i < rightArr.length; i++) {
               if (hasLetter(rightArr[i])) {
                   var abbr = rightArr[i].match(/^[a-z|A-Z]+/gi);
@@ -277,20 +295,8 @@
               }
           }
 
-          // console.log(left);
-          // console.log(right);
-          // console.log(eval(left));
-          // console.log(eval(right));
-
-          return !showFiltered(str, left, right);
-
-      })
-          .attr("opacity",0.1);
-        }
-        else{
-          lineset.attr("opacity",1);
-        }
-    })
+          return !showFiltered(formula, left, right);
+      }
 
       function showFiltered(str, left, right) {
           if (str.match(">=") != null) {
@@ -306,9 +312,6 @@
               return eval(left) < eval(right);
           }
           if (str.match("!=") != null) {
-              // console.log(eval(left) === eval(right));
-              // console.log(eval(left));
-              // console.log(eval(right));
               return eval(left) !== eval(right);
           }
           if (str.match("=") != null) {
@@ -317,45 +320,66 @@
           return false;
       }
 
-    function strToVal(patient, index, abbr) {
-      var vals = patient.values[index];
-      if (abbr == "id") {
-          return vals.Patient_ID;
-      }
-      else if (abbr == "sex") {
-          return vals.Sex;
-      }
-      else if (abbr == "life") {
-          return vals.Day_of_Life;
-      }
-      else if (abbr == "day") {
-          return vals.Days_on_PKT;
-      }
-      else if (abbr == "g") {
-          return vals.Blood_glucose_mg_per_dL;
-      }
-      else if (abbr == "k") {
-          return vals.Blood_ketones_mg_per_dL;
-      }
-      else if (abbr == "index") {
-          return vals.GKI;
-      }
-      else {
-          return null;
-      }
-    }
-
-    function hasLetter(str) {
-      for (var i in str) {
-          var asc = str.charCodeAt(i);
-          if ((asc >= 65 && asc <= 90 || asc >= 97 && asc <= 122)) {
-              return true;
+      function strToVal(patient, index, abbr) {
+          var vals = patient.values[index];
+          if (abbr == "id") {
+              return vals.Patient_ID;
+          } else if (abbr == "sex") {
+              return vals.Sex;
+          } else if (abbr == "life") {
+              return vals.Day_of_Life;
+          } else if (abbr == "day") {
+              return vals.Days_on_PKT;
+          } else if (abbr == "g") {
+              return vals.Blood_glucose_mg_per_dL;
+          } else if (abbr == "k") {
+              return vals.Blood_ketones_mg_per_dL;
+          } else if (abbr == "index") {
+              return vals.GKI;
+          } else {
+              return null;
           }
       }
-      return false;
-    }
 
-  };
+      function hasLetter(str) {
+          for (var i in str) {
+              var asc = str.charCodeAt(i);
+              if ((asc >= 65 && asc <= 90 || asc >= 97 && asc <= 122)) {
+                  return true;
+              }
+          }
+          return false;
+      }
+
+      // reset button
+      var reset = d3.select(".reset_ketone_days");
+      reset.on("click", handleReset)
+          .on("mouseover", handleMouseOver)
+          .on("mouseout", handleMouseOut);
+
+      function handleReset() {
+          lineset.attr("opacity", 1);
+      }
+
+      function handleMouseOver() {
+          d3.select(".rect_ketone_days").attr("fill", "silver");
+      }
+
+      function handleMouseOut() {
+          d3.select(".rect_ketone_days").attr("fill", "white");
+      }
+
+      d3.select("#newFilter").on("mouseout", function(){
+          d3.selectAll(".submit_ketone_days")
+              .on("click", handleFilters)
+              .on("mouseover", handleMouseOver)
+              .on("mouseout", handleMouseOut);
+          d3.selectAll(".reset_ketone_days")
+              .on("click", handleReset)
+              .on("mouseover", handleMouseOver)
+              .on("mouseout", handleMouseOut);
+      })
+  }
 
   d3.csv("./test.csv")
     .then(
@@ -365,29 +389,6 @@
         d.Blood_ketones_mg_per_dL = +d.Blood_ketones_mg_per_dL;
       });
       render(data);
-    });
-
-    var fileInput = document.getElementById("xlf"),
-        readFile = function () {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                var url1 = e.target.result;
-                //console.log(url1);
-                d3.csv(url1)
-                    .then(data => {
-                        data.forEach(d => {
-                            d.Days_on_PKT = +d.Days_on_PKT;
-                            d.Blood_ketones_mg_per_dL = +d.Blood_ketones_mg_per_dL;
-                        });
-                        render(data);
-                    });
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-        };
-    fileInput.addEventListener('change', function(){
-        readFile();
-        //console.log('The data was changed!');
     });
 
 }(d3));

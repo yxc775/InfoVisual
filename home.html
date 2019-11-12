@@ -2,9 +2,6 @@
 <html>
 <meta charset="utf-8">
 
-<input id="xlf" type="file" style="position:absolute; top:50px; left: 1500px;">
-<script src="xlsx.full.min.js"></script>
-
 <style>
 
   text {
@@ -41,13 +38,11 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <!--<script src="d3.min.js"></script>-->
 
-    <link rel="stylesheet"
-          href="bootstrap-4.3.1-dist\css\bootstrap.min.css">
-    <link rel="stylesheet"
-          href="styles.css">
+    <link rel="stylesheet"  href="bootstrap-4.3.1-dist\css\bootstrap.min.css">
     <script src = "jquery-3.4.1.min.js"></script>
-    <link rel = "stylesheet" type = "text/css"
-          herf = "bootstrap-4.3.1-dist\css\bootstrap.css">
+    <link rel = "stylesheet" type = "text/css"  herf = "bootstrap-4.3.1-dist\css\bootstrap.css">
+<!--    <script src="AddFilter.js"></script>-->
+
   </head>
   <body  style = "overflow:scroll">
 
@@ -67,7 +62,8 @@
 
   <div class="board" onselectstart="return false;" unselectable="on">
     <svg id = "svg_glucouse_days" width="960" height="500"></svg>
-    <script src="glucose_days.js"></script>
+    <script src="glucose_days.js" type="module"></script>
+
 
     <svg id = "svg_ketone_days" width="960" height="500"></svg>
     <script src="ketone_days.js"></script>
@@ -82,22 +78,44 @@
   <div id="table" class="scrollit">
     <table>
       <tr>
-        <th> Patient_ID</th>
-
+        <th>Patient_ID</th>
         <th>Days_on_PKT</th>
-        <th>Ketone</th>
         <th>Glucose</th>
+        <th>Ketone</th>
       </tr>
     </table>
   </div>
 
   <div class = "filters">
-    <p>Label &nbsp<input type="text"/></p>
-    <p><textarea class="formulas">(k1-k0)/(day1-day0)>0</textarea></p>
-    <p>glucose_days &nbsp<input class="submit_glucose_days" type="submit" value="Submit" /></p>
-    <p>ketone_days &nbsp<input class="submit_ketone_days" type="submit" value="Submit" /></p>
-    <p>GKI_days &nbsp<input class="submit_GKI_days" type="submit" value="Submit" /></p>
+    <div class = "filter">
+      <p><strong>Label &nbsp</strong><input type="text" size="12"/></p>
+      <p><textarea id="49" class="formulas" rows="3">(k1-k0)/(day1-day0)>0</textarea></p>
+<!--      <div style = "display:inline-block">-->
+<!--        <p>glucose_days &nbsp</p>-->
+<!--        <p>ketone_days &nbsp</p>-->
+<!--        <p>GKI_days &nbsp</p>-->
+<!--      </div>-->
+      <div style = "display:inline-block">
+        <p>
+          <input id = "1" class="submit_glucose_days btn btn-info" type="submit" value="Submit" />
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <input class="reset_glucose_days btn btn-info" type="reset" value="Reset"/>
+        </p>
+        <p>
+          <input id = "17" class="submit_ketone_days btn btn-info" type="submit" value="Submit" />
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <input class="reset_ketone_days btn btn-info" type="reset" value="Reset"/>
+        </p>
+        <p>
+          <input id = "33" class="submit_GKI_days btn btn-info" type="submit" value="Submit" />
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <input class="reset_GKI_days btn btn-info" type="reset" value="Reset"/>
+        </p>
+      </div>
+    </div>
   </div>
+
+  <button id = "newFilter" class="btn btn-primary"><b>New Filter</b></button>
 
   </body>
 </html>
