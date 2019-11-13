@@ -29,14 +29,16 @@
         bottom: 160,
         left: 80
     }
-    svg.append("rect")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("fill", "white")
-        .property("value", []);
+
 
     //
     const render = data => {
+        svg.append("rect")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("fill", "white")
+            .property("value", []);
+
         const title = 'Glucose vs Ketone';
 
             const innerWidth = width - margin.left - margin.right;
@@ -64,25 +66,21 @@
 
         const yValue = d => d.Blood_glucose_mg_per_dL;
         const yAxisLabel = 'Glucose (mg/dL)';
-        var domainx = d3.extent(data, xValue)
-        domainx[1] += 10
+
         var xScale = d3.scaleLinear()
-          .domain(domainx)
+          .domain(d3.extent(data, xValue))
           .range([0, innerWidth]);
 
         const xScale2 = d3.scaleLinear()
-            .domain(domainx)
+            .domain(d3.extent(data, xValue))
             .range([0, innerWidth]);
 
-        var domainy = d3.extent(data, yValue)
-       domainy[1] += 10
-       domainy[0] -= 10
         const yScale = d3.scaleLinear()
-          .domain(domainy)
+          .domain(d3.extent(data, yValue))
           .range([0,innerHeight]);
 
         const yScale2 = d3.scaleLinear()
-            .domain(domainy)
+            .domain(d3.extent(data, yValue))
             .range([innerHeight, 0]);
 
         const xAxis = d3.axisBottom(xScale)
@@ -166,9 +164,9 @@
                             .append("clipPath")
                             .attr("id", "clipb")
                             .append("rect")
-                            .attr("width", innerWidth+10)
+                            .attr("width", innerWidth)
                             .attr("height", innerHeight)
-                            .attr('transform', `translate(${145},${50})`);
+                            .attr('transform', `translate(${100},0)`);
 
          circleset = g.selectAll("circle")
             .data(data)
@@ -295,6 +293,78 @@
             svg.append("g")
             .call(brush)
             .attr("clip-path", "url(#clipb)")
+        });
+
+        var fileInput = document.getElementById("xlf"),
+            readFile = function () {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var url1 = e.target.result;
+                    //console.log(url1);
+                    d3.csv(url1)
+                        .then(data => {
+                            data.forEach(d => {
+                                d.Blood_ketones_mg_per_dL = +d.Blood_ketones_mg_per_dL;
+                                d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
+                            });
+                            render(data);
+                            function highlightBrushedCircles() {
+
+                                if (d3.event.selection != null) {
+
+                                    // revert circles to initial style
+                                    circleset.attr("class", "non_brushed");
+
+                                    var brush_coords = d3.brushSelection(this);
+
+                                    // style brushed circles
+                                    circleset.filter(function (){
+
+                                        var cx1 = d3.select(this).attr("cx"),
+                                            cy1 = d3.select(this).attr("cy");
+
+                                        return isBrushed(brush_coords, cx1, cy1);
+                                    })
+                                        .attr("class", "brushed");
+                                }
+                            }
+
+
+                            function displayTable() {
+
+                                // disregard brushes w/o selections
+                                // ref: http://bl.ocks.org/mbostock/6232537
+                                if (!d3.event.selection) return;
+
+                                // programmed clearing of brush after mouse-up
+                                // ref: https://github.com/d3/d3-brush/issues/10
+                                d3.select(this).call(brush.move, null);
+
+                                var d_brushed = d3.selectAll(".brushed").data();
+
+                                // populate table if one or more elements is brushed
+                                if (d_brushed.length > 0) {
+                                    clearTableRows();
+                                    d_brushed.forEach(d_row => populateTableRow(d_row))
+                                } else {
+                                    clearTableRows();
+                                }
+                            }
+
+                            var brush = d3.brush()
+                                .on("brush", highlightBrushedCircles)
+                                .on("end", displayTable);
+
+                            svg.append("g")
+                                .call(brush);
+                        });
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            };
+        fileInput.addEventListener('change', function(){
+            readFile();
+            //console.log('The data was changed!');
         });
 
 
