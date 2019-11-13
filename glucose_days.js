@@ -273,7 +273,6 @@
       function handleFilters() {
           // get formula from input as string & delete spaces
           var id = +$(this).attr("id") + 48;
-          console.log(id);
           var str = $("#"+id).val().replace(/\s/g, '');
           // split into formulas
           var formulas = str.split(/\&/);
