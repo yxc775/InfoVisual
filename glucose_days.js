@@ -12,14 +12,15 @@
   const height = +svg.attr('height');
   const colorValue = d => d.Patient_ID;
 
-  // background
-  svg.append("rect")
-      .attr("class", "rect_glusoce_days")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .attr("fill", "white");
-
   const render = data => {
+      // background
+      svg.append("rect")
+          .attr("class", "rect_glusoce_days")
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("fill", "white");
+
+
       const title = 'Glucose vs Days on PKT';
       var margin = {
           top: 50,
@@ -376,11 +377,11 @@
       }
 
       function handleMouseOver() {
-          d3.select('.rect_glusoce_days').attr("fill", "silver");
+          d3.selectAll('.rect_glusoce_days').attr("fill", "silver");
       }
 
       function handleMouseOut() {
-          d3.select(".rect_glusoce_days").attr("fill", "white");
+          d3.selectAll(".rect_glusoce_days").attr("fill", "white");
       }
 
       var index = 1;
@@ -416,6 +417,29 @@
         d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
       });
       render(data);
+    });
+
+    var fileInput = document.getElementById("xlf"),
+        readFile = function () {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var url1 = e.target.result;
+                //console.log(url1);
+                d3.csv(url1)
+                    .then(data => {
+                        data.forEach(d => {
+                            d.Days_on_PKT = +d.Days_on_PKT;
+                            d.Blood_glucose_mg_per_dL = +d.Blood_glucose_mg_per_dL;
+                        });
+                        render(data);
+                    });
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        };
+    fileInput.addEventListener('change', function(){
+        readFile();
+        //console.log('The data was changed!');
     });
 
 }(d3));

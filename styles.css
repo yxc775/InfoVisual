@@ -153,8 +153,3 @@ text {
   left: 50px;
   font-size: x-large;
 }
-
-.purple-border .form-control:focus {
-  border: 1px solid #ba68c8;
-  box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
-}
