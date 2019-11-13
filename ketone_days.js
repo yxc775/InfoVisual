@@ -197,12 +197,28 @@
         .attr('d', d => lineGenerator(d.values))
         .attr('stroke', d => colorScale(d.key))
         .on("mouseover", function(d){
+          if(zoomed){
            tootip.transition()
                .duration(200)
-               .style("opacity", .9);
+               .style("height","112px")
+               .style("width","240px")
+               .style("font-size", "48px")
+               .style("opacity", .9)
            tootip.html("Patient " + d.key)
                .style("left", (d3.event.pageX) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
+             }
+            else{
+              tootip.transition()
+                  .duration(200)
+                  .style("height","56px")
+                  .style("width","120px")
+                  .style("font-size", "24px")
+                  .style("opacity", .9)
+              tootip.html("Patient " + d.key)
+                  .style("left", (d3.event.pageX) + "px")
+                  .style("top", (d3.event.pageY - 28) + "px");
+            }
            })
         .on("mouseout", function(d) {
           tootip.transition()

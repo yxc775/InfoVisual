@@ -73,6 +73,10 @@ body {
   /*mix-blend-mode: multiply;*/
 }
 
+.line-path:hover{
+  stroke-width: 10;
+}
+
 text {
   font-family: sans-serif;
 }
