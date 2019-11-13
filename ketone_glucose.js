@@ -64,21 +64,25 @@
 
         const yValue = d => d.Blood_glucose_mg_per_dL;
         const yAxisLabel = 'Glucose (mg/dL)';
-
+        var domainx = d3.extent(data, xValue)
+        domainx[1] += 10
         var xScale = d3.scaleLinear()
-          .domain(d3.extent(data, xValue))
+          .domain(domainx)
           .range([0, innerWidth]);
 
         const xScale2 = d3.scaleLinear()
-            .domain(d3.extent(data, xValue))
+            .domain(domainx)
             .range([0, innerWidth]);
 
+        var domainy = d3.extent(data, yValue)
+       domainy[1] += 10
+       domainy[0] -= 10
         const yScale = d3.scaleLinear()
-          .domain(d3.extent(data, yValue))
+          .domain(domainy)
           .range([0,innerHeight]);
 
         const yScale2 = d3.scaleLinear()
-            .domain(d3.extent(data, yValue))
+            .domain(domainy)
             .range([innerHeight, 0]);
 
         const xAxis = d3.axisBottom(xScale)
@@ -162,9 +166,9 @@
                             .append("clipPath")
                             .attr("id", "clipb")
                             .append("rect")
-                            .attr("width", innerWidth)
+                            .attr("width", innerWidth+10)
                             .attr("height", innerHeight)
-                            .attr('transform', `translate(${100},0)`);
+                            .attr('transform', `translate(${145},${50})`);
 
          circleset = g.selectAll("circle")
             .data(data)
