@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="959ab59c-9f57-4306-9700-c753e1dd1a7c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GKI_days.js" beforeDir="false" afterPath="$PROJECT_DIR$/GKI_days.js" afterDir="false" />
@@ -9,6 +10,9 @@
       <change beforePath="$PROJECT_DIR$/ketone_days.js" beforeDir="false" afterPath="$PROJECT_DIR$/ketone_days.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ketone_glucose.js" beforeDir="false" afterPath="$PROJECT_DIR$/ketone_glucose.js" afterDir="false" />
     </list>
+=======
+    <list default="true" id="959ab59c-9f57-4306-9700-c753e1dd1a7c" name="Default Changelist" comment="" />
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,11 +28,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/home.html">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="520">
               <caret line="110" column="12" lean-forward="true" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="12" />
+=======
+            <state relative-caret-position="320">
+              <caret line="16" column="28" lean-forward="true" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
               <folding>
                 <element signature="n#style#0;n#input#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -51,6 +60,7 @@
         <entry file="file://$PROJECT_DIR$/ketone_days.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
+<<<<<<< HEAD
               <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
             </state>
           </provider>
@@ -70,6 +80,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="80">
               <caret line="41" column="8" lean-forward="true" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
+=======
+              <caret line="274" column="44" selection-start-line="274" selection-start-column="44" selection-end-line="274" selection-end-column="44" />
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
             </state>
           </provider>
         </entry>
@@ -150,8 +163,11 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
       <pane id="Scope" />
       <pane id="PackagesPane" />
+=======
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -163,6 +179,11 @@
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
+=======
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -223,18 +244,29 @@
       <workItem from="1573614464526" duration="585000" />
       <workItem from="1573617168053" duration="370000" />
       <workItem from="1573617628479" duration="192000" />
+<<<<<<< HEAD
       <workItem from="1573777204584" duration="328000" />
+=======
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="78777000" />
+=======
+    <option name="totallyTimeSpent" value="78449000" />
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49853373" visible="true" weight="0.26340482" />
+=======
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49853373" visible="true" weight="0.2600536" />
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
       <window_info id="Structure" order="1" sideWeight="0.5014663" side_tool="true" weight="0.10991957" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -387,10 +419,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/glucose_days.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="274" column="44" selection-start-line="274" selection-start-column="44" selection-end-line="274" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/home.html">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="520">
           <caret line="110" column="12" lean-forward="true" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="12" />
+=======
+        <state relative-caret-position="320">
+          <caret line="16" column="28" lean-forward="true" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
           <folding>
             <element signature="n#style#0;n#input#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -399,6 +443,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/ketone_days.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -427,5 +472,7 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> 856fac88fdead776f08934a53d3b662e24307395
   </component>
 </project>
