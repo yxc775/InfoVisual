@@ -29,7 +29,7 @@
         left: 150
     }
     var margin2 = {
-        top: 410,
+        top: 560,
         right: 20,
         bottom: 70,
         left: 150
@@ -51,7 +51,7 @@
     g.append('text')
               .attr('class', 'title')
               .attr('y', -10)
-              .attr('x',innerHeight / 2)
+              // .attr('x',100)
               .text(title);
     const slider = svg.append('g')
         .attr("class","slider")
@@ -159,7 +159,7 @@
     slidery.append("g")
            .attr("class","brushy")
            .call(brushy)
-           .call(brushy.move,[0,290])
+           .call(brushy.move,[0,440])
 
 
 
@@ -276,12 +276,15 @@
           .on("mouseout", handleMouseOut);
 
       function handleFilters() {
-          // get formula from input as string
-          // delete spaces
+          // get formula from input as string & delete spaces
           var id = +$(this).attr("id") + 16;
           var str = $("#"+id).val().replace(/\s/g, '');
           // split into formulas
           var formulas = str.split(/\&/);
+          console.log("***************************************");
+          console.log("Filter:");
+          console.log(""+$("#"+id).val());
+          console.log("***************************************");
           lineset.filter(function (f) {
               for (var i = 0; i < formulas.length; i++) {
                   var formula = formulas[i];
@@ -289,12 +292,25 @@
                       return true;
                   }
               }
+              var vals = f.values[0];
+              console.log("id: " + vals.Patient_ID + ", sex: " + vals.Sex + ", age: " + Math.round(vals.Day_of_Life/365*100)/100);
+              for (let i = 0; i < f.values.length; i++) {
+                  vals = f.values[i];
+                  console.log("days: " + vals.Days_on_PKT + ", glucose: " + vals.Blood_glucose_mg_per_dL + ", ketone: " + vals.Blood_ketones_mg_per_dL + ", GKI: " + vals.GKI)
+              }
+              // console.log("---------------------------------------");
+              console.log("=======================================");
               return false;
           })
               .attr("opacity", 0.1);
       }
 
       function handleSingleFormula(formula, f) {
+          if (formula.startsWith("up")||formula.startsWith("down")
+              ||formula.startsWith("none")||formula.startsWith("both")
+              ||formula.startsWith("either")) {
+              return !handleRange(formula, f);
+          }
           var arr = formula.split(/[\>=\>\<=\<\!=\=]/);
           var left = arr[0];
           var leftArr = left.split(/[\*\+\/\-\(\)]/);
@@ -316,6 +332,82 @@
           }
 
           return !showFiltered(formula, left, right);
+      }
+
+      // up(sex, 5, 0, 100)
+      function handleRange(formula, f) {
+          var up = false;
+          var down = false;
+
+          var symbols = formula.split(/[\(\)\,]/);
+          var type = symbols[0];
+          var variable = symbols[1];
+          var gap = symbols[2];
+          var start = symbols[3];
+          var end = symbols[4];
+
+          // get appropriate range
+          var startIndex = Number.MAX_SAFE_INTEGER;
+          var endIndex = Number.MIN_SAFE_INTEGER;
+          for (var i = 0; i < f.values.length; i++) {
+              var d = f.values[i].Days_on_PKT;
+              if (start <= d && d <= end) {
+                  startIndex = Math.min(startIndex, i);
+                  endIndex = Math.max(endIndex, i);
+              }
+          }
+
+          if (startIndex >= endIndex) {
+              return false;
+          }
+
+          if (variable == "g") {
+              for (var i = startIndex; i < endIndex; i++) {
+                  var former = f.values[i].Blood_glucose_mg_per_dL;
+                  var later = f.values[i + 1].Blood_glucose_mg_per_dL;
+                  if (later - former >= gap) {
+                      up = true;
+                  }
+                  if (later - former <= -gap) {
+                      down = true;
+                  }
+              }
+          }
+
+          if (variable == "k") {
+              for (var i = startIndex; i < endIndex; i++) {
+                  var former = f.values[i].Blood_ketones_mg_per_dL;
+                  var later = f.values[i + 1].Blood_ketones_mg_per_dL;
+                  if (later - former >= gap) {
+                      up = true;
+                  }
+                  if (later - former <= -gap) {
+                      down = true;
+                  }
+              }
+          }
+
+          // get none and both
+          var none = !up && !down;
+          var both = up && down;
+          var either = up || down;
+          if (type == "up") {
+              return up;
+          }
+          if (type == "down") {
+              return down;
+          }
+          if (type == "none") {
+              return none;
+          }
+          if (type == "both") {
+              return both;
+          }
+          if (type == "either") {
+              return either;
+          }
+
+          return false;
       }
 
       function showFiltered(str, left, right) {
@@ -343,9 +435,12 @@
       function strToVal(patient, index, abbr) {
           var vals = patient.values[index];
           if (abbr == "id") {
-              return vals.Patient_ID;
+              return +Number(vals.Patient_ID.match(/\d+$/gi));
           } else if (abbr == "sex") {
-              return vals.Sex;
+              if (vals.Sex == "female") {
+                  return 0;
+              }
+              return 1;
           } else if (abbr == "life") {
               return vals.Day_of_Life;
           } else if (abbr == "day") {

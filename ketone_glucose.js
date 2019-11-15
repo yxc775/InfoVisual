@@ -17,7 +17,7 @@
         left: 150
     }
     var margin2 = {
-        top: 410,
+        top: 560,
         right: 20,
         bottom: 70,
         left: 150
@@ -52,7 +52,7 @@
             g.append('text')
                       .attr('class', 'title')
                       .attr('y', -10)
-                      .attr('x',innerHeight / 2)
+                      // .attr('x',100)
                       .text(title);
             const slider = svg.append('g')
                 .attr("class","slider")
@@ -68,7 +68,8 @@
         const yAxisLabel = 'Glucose (mg/dL)';
 
         var domainx = d3.extent(data, xValue)
-      domainx[1] += 10
+        domainx[0] -= 2
+        domainx[1] += 2
 
         var xScale = d3.scaleLinear()
           .domain(domainx)
@@ -79,8 +80,8 @@
             .range([0, innerWidth]);
 
         var domainy = d3.extent(data, yValue)
-         domainy[1] += 10
-         domainy[0] -= 10
+        domainy[0] -= 2
+        domainy[1] += 2
         const yScale = d3.scaleLinear()
           .domain(domainy)
           .range([0,innerHeight]);
@@ -196,7 +197,7 @@
             slidery.append("g")
                    .attr("class","brushy")
                    .call(brushy)
-                   .call(brushy.move,[0,290])
+                   .call(brushy.move,[0,440])
 
                    function brushed() {
                        var selection = d3.event.selection;

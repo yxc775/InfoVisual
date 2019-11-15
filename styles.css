@@ -102,10 +102,10 @@ text {
 
 .scrollit {
   overflow:scroll;
-  height: 850px;
+  height: 950px;
   position: absolute;
-  top: 250px;
-  left: 2000px;
+  top: 350px;
+  left: 2030px;
   visibility: hidden;
 }
 
@@ -120,18 +120,18 @@ text {
 
 #svg_GKI_days{
   position: absolute;
-  top: 500px;
+  top: 650px;
 }
 
 #svg_ketone_glucose{
   position: absolute;
-  top: 500px;
+  top: 650px;
   left: 960px;
 }
 
 .filters {
   position: absolute;
-  top: 1250px;
+  top: 1550px;
   left: 20px;
 }
 
@@ -149,7 +149,7 @@ text {
 
 #newFilter{
   position: absolute;
-  top: 1200px;
+  top: 1500px;
   left: 50px;
   font-size: x-large;
 }
