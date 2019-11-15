@@ -21,7 +21,7 @@
           .attr("height", "100%")
           .attr("fill", "white");
 
-    const title = 'GKI vs Days on PKT';
+    const title = 'C: GKI vs Days on PKT';
     var margin = {
         top: 50,
         right: 20,

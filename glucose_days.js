@@ -20,8 +20,7 @@
           .attr("height", "100%")
           .attr("fill", "white");
 
-
-      const title = 'Glucose vs Days on PKT';
+      const title = 'A: Glucose vs Days on PKT';
       var margin = {
           top: 50,
           right: 20,
@@ -383,10 +382,10 @@
           d3.selectAll(".rect_glusoce_days").attr("fill", "white");
       }
 
+      var origin = d3.select(".filter");
       var index = 1;
       d3.select("#newFilter").on("click", function() {
           if (index <= 16) {
-              var origin = d3.select(".filter");
               var copy = origin.clone(true).attr("transform", "translate(0,100)");
               index++;
               copy.select(".formulas").attr("id", index + 48);
@@ -401,6 +400,7 @@
                   .on("click", handleReset)
                   .on("mouseover", handleMouseOver)
                   .on("mouseout", handleMouseOut);
+              origin = copy;
           } else {
               alert("More than 16 filters!")
           }

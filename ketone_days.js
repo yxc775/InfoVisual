@@ -20,7 +20,7 @@
           .attr("height", "100%")
           .attr("fill", "white");
 
-    const title = 'Ketone vs Days on PKT';
+    const title = 'B: Ketone vs Days on PKT';
     var margin = {
         top: 50,
         right: 20,

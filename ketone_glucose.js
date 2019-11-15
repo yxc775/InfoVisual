@@ -39,7 +39,7 @@
             .attr("fill", "white")
             .property("value", []);
 
-        const title = 'Glucose vs Ketone';
+        const title = 'D: Glucose vs Ketone';
 
             const innerWidth = width - margin.left - margin.right;
             const innerWidth2 = width - margin3.left - margin3.right;
