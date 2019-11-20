@@ -301,7 +301,7 @@
 
       function handleSingleFormula(formula, f) {
           if (formula.startsWith("up")||formula.startsWith("down")
-              ||formula.startsWith("none")||formula.startsWith("both")
+              ||formula.startsWith("neither")||formula.startsWith("both")
               ||formula.startsWith("either")) {
               return !handleRange(formula, f);
           }
@@ -314,6 +314,7 @@
               if (hasLetter(leftArr[i])) {
                   var abbr = leftArr[i].match(/^[a-z|A-Z]+/gi);
                   var index = leftArr[i].match(/\d+$/gi);
+                  if (index == null) {index = 0}
                   left = left.replace(new RegExp(leftArr[i], 'g'), strToVal(f, index, abbr));
               }
           }
@@ -321,6 +322,7 @@
               if (hasLetter(rightArr[i])) {
                   var abbr = rightArr[i].match(/^[a-z|A-Z]+/gi);
                   var index = rightArr[i].match(/\d+$/gi);
+                  if (index == null) {index = 0}
                   right = right.replace(new RegExp(rightArr[i], 'g'), strToVal(f, index, abbr));
               }
           }
@@ -381,8 +383,8 @@
               }
           }
 
-          // get none and both
-          var none = !up && !down;
+          // get neither and both
+          var neither = !up && !down;
           var both = up && down;
           var either = up || down;
           if (type == "up") {
@@ -391,8 +393,8 @@
           if (type == "down") {
               return down;
           }
-          if (type == "none") {
-              return none;
+          if (type == "neither") {
+              return neither;
           }
           if (type == "both") {
               return both;
@@ -435,7 +437,7 @@
                   return 0;
               }
               return 1;
-          } else if (abbr == "life") {
+          } else if (abbr == "age") {
               return vals.Day_of_Life;
           } else if (abbr == "day") {
               return vals.Days_on_PKT;
