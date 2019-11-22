@@ -310,7 +310,7 @@
 
           }
           if (formula.startsWith("increase")||formula.startsWith("decrease")
-              ||formula.startsWith("stable")) {
+              ||formula.startsWith("stable")||formula.startsWith("notincrease")) {
               return !handleRange2(formula, f);
           }
           var arr = formula.split(/[\>=\>\<=\<\!=\=]/);
@@ -420,6 +420,7 @@
           var increase = false;
           var decrease = false;
           var stable = false;
+          var notincrease = false;
 
           var symbols = formula.split(/[\(\)\,]/);
           var type = symbols[0];
@@ -449,6 +450,7 @@
               increase = (later - former >= gap);
               decrease = (former - later >= gap);
               stable = (Math.abs(later - former) < gap);
+              notincrease = (later - former < gap);
           }
 
           if (variable == "k") {
@@ -457,6 +459,7 @@
               increase = (later - former >= gap);
               decrease = (former - later >= gap);
               stable = (Math.abs(later - former) <= gap);
+              notincrease = (later - former < gap);
           }
 
           if (type == "increase") {
@@ -467,6 +470,9 @@
           }
           if (type == "stable") {
               return stable;
+          }
+          if (type == "notincrease") {
+              return notincrease;
           }
           return false;
       }
