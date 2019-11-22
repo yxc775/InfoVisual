@@ -34,6 +34,7 @@
     //
     const render = data => {
         svg.append("rect")
+            .attr("class", "rect_Glucose_Ketone")
             .attr("width", "100%")
             .attr("height", "100%")
             .attr("fill", "white")
@@ -133,8 +134,6 @@
             .attr('text-anchor', 'middle')
             .text(yAxisLabel);
 
-
-
         const xAxisG = g.append('g')
           .attr('class','axis--x').call(xAxis)
           .attr('transform', `translate(0,${innerHeight})`);
@@ -224,8 +223,6 @@
 
                    }
 
-
-
         // zoom
         let zoomed = false;
         svg.on("dblclick", function () {
@@ -240,6 +237,66 @@
                 zoomed = false;
             }
         })
+
+        // filter part
+        var submit = d3.select(".submit_Glucose_Ketone");
+        submit.on("click", handleClick)
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
+
+         //
+        function handleClick() {
+            var gl = $(glucoseLower).val();
+            if (gl == "") {
+                gl = Number.MIN_SAFE_INTEGER;
+            }
+            var gu = $(glucoseUpper).val();
+            if (gu == "") {
+                gu = Number.MAX_SAFE_INTEGER;
+            }
+            var kl = $(ketoneLower).val();
+            if (kl == "") {
+                kl = Number.MIN_SAFE_INTEGER;
+            }
+            var ku = $(ketoneUpper).val();
+            if (ku == "") {
+                ku = Number.MAX_SAFE_INTEGER;
+            }
+            var dl = $(dayLower).val();
+            if (dl == "") {
+                dl = Number.MIN_SAFE_INTEGER;
+            }
+            var du = $(dayUpper).val();
+            if (du == "") {
+                du = Number.MAX_SAFE_INTEGER;
+            }
+
+            circleset.filter(function(f) {
+                var g = f.Blood_glucose_mg_per_dL;
+                var k = f.Blood_ketones_mg_per_dL;
+                var d = f.Days_on_PKT;
+                var res = gl<=g && g<=gu && kl<=k && k<=ku && dl<=d && d<=du;
+                return !res;
+            }).attr("r", 0);
+            // console.log(str);
+        }
+
+        var reset = d3.select(".reset_Glucose_Ketone");
+        reset.on("click", handleReset)
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
+
+        function handleReset() {
+            circleset.attr("r", 5);
+        }
+
+        function handleMouseOver() {
+            d3.selectAll(".rect_Glucose_Ketone").attr("fill", "silver");
+        }
+
+        function handleMouseOut() {
+            d3.selectAll(".rect_Glucose_Ketone").attr("fill", "white");
+        }
 
     };
 

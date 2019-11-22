@@ -305,6 +305,10 @@
               ||formula.startsWith("either")) {
               return !handleRange(formula, f);
           }
+          if (formula.startsWith("increase")||formula.startsWith("decrease")
+              ||formula.startsWith("stable")) {
+              return !handleRange2(formula, f);
+          }
           var arr = formula.split(/[\>=\>\<=\<\!=\=]/);
           var left = arr[0];
           var leftArr = left.split(/[\*\+\/\-\(\)]/);
@@ -315,6 +319,7 @@
                   var abbr = leftArr[i].match(/^[a-z|A-Z]+/gi);
                   var index = leftArr[i].match(/\d+$/gi);
                   if (index == null) {index = 0}
+                  if (index >= f.values.length) {return true}
                   left = left.replace(new RegExp(leftArr[i], 'g'), strToVal(f, index, abbr));
               }
           }
@@ -323,6 +328,7 @@
                   var abbr = rightArr[i].match(/^[a-z|A-Z]+/gi);
                   var index = rightArr[i].match(/\d+$/gi);
                   if (index == null) {index = 0}
+                  if (index >= f.values.length) {return true}
                   right = right.replace(new RegExp(rightArr[i], 'g'), strToVal(f, index, abbr));
               }
           }
@@ -403,6 +409,62 @@
               return either;
           }
 
+          return false;
+      }
+
+      // increase(g, 5, 0, 100)
+      function handleRange2(formula, f) {
+          var increase = false;
+          var decrease = false;
+          var stable = false;
+
+          var symbols = formula.split(/[\(\)\,]/);
+          var type = symbols[0];
+          var variable = symbols[1];
+          var gap = symbols[2];
+          var start = symbols[3];
+          var end = symbols[4];
+
+          // get appropriate range
+          var startIndex = Number.MAX_SAFE_INTEGER;
+          var endIndex = Number.MIN_SAFE_INTEGER;
+          for (var i = 0; i < f.values.length; i++) {
+              var d = f.values[i].Days_on_PKT;
+              if (start <= d && d <= end) {
+                  startIndex = Math.min(startIndex, i);
+                  endIndex = Math.max(endIndex, i);
+              }
+          }
+
+          if (startIndex >= endIndex) {
+              return false;
+          }
+
+          if (variable == "g") {
+              var former = f.values[startIndex].Blood_glucose_mg_per_dL;
+              var later = f.values[endIndex].Blood_glucose_mg_per_dL;
+              increase = (later - former >= gap);
+              decrease = (former - later >= gap);
+              stable = (Math.abs(later - former) < gap);
+          }
+
+          if (variable == "k") {
+              var former = f.values[startIndex].Blood_ketones_mg_per_dL;
+              var later = f.values[endIndex].Blood_ketones_mg_per_dL;
+              increase = (later - former >= gap);
+              decrease = (former - later >= gap);
+              stable = (Math.abs(later - former) <= gap);
+          }
+
+          if (type == "increase") {
+              return increase;
+          }
+          if (type == "decrease") {
+              return decrease;
+          }
+          if (type == "stable") {
+              return stable;
+          }
           return false;
       }
 

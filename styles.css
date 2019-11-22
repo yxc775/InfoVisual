@@ -100,11 +100,17 @@ text {
   fill: #635F5D;
 }
 
+.scatterFilter{
+  position: relative;
+  top: 80px;
+  left: 2030px;
+}
+
 .scrollit {
   overflow:scroll;
   height: 950px;
   position: absolute;
-  top: 350px;
+  top: 480px;
   left: 2030px;
   visibility: hidden;
 }
