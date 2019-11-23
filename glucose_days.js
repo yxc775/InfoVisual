@@ -275,10 +275,9 @@
           var str = $("#"+id).val().replace(/\s/g, '');
           // split into formulas
           var formulas = str.split(/\&/);
-          console.log("***************************************");
-          console.log("Filter:");
-          console.log(""+$("#"+id).val());
-          console.log("***************************************");
+          console.log("=======================================");
+          console.log("Filter:" + ""+$("#"+id).val());
+          console.log("id sex age days glucose ketone GKI")
           lineset.filter(function (f) {
               for (var i = 0; i < formulas.length; i++) {
                   var formula = formulas[i];
@@ -287,16 +286,13 @@
                   }
               }
               var vals = f.values[0];
-              console.log("id: " + vals.Patient_ID + ", sex: " + vals.Sex + ", age: " + Math.round(vals.Day_of_Life/365*100)/100);
               for (let i = 0; i < f.values.length; i++) {
                   vals = f.values[i];
-                  console.log("days: " + vals.Days_on_PKT + ", glucose: " + vals.Blood_glucose_mg_per_dL + ", ketone: " + vals.Blood_ketones_mg_per_dL + ", GKI: " + vals.GKI)
+                  console.log(vals.Patient_ID + " " + vals.Sex + " " + vals.Day_of_Life + " " + vals.Days_on_PKT + " " + vals.Blood_glucose_mg_per_dL + " " + vals.Blood_ketones_mg_per_dL + " " + vals.GKI)
               }
-              // console.log("---------------------------------------");
-              console.log("=======================================");
               return false;
           })
-              .attr("opacity", 0.1);
+              .attr("opacity", -1);
       }
 
       function handleSingleFormula(formula, f) {
