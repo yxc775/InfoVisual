@@ -246,6 +246,7 @@
 
          //
         function handleClick() {
+            handleReset();
             var gl = $(glucoseLower).val();
             if (gl == "") {
                 gl = Number.MIN_SAFE_INTEGER;
@@ -271,10 +272,12 @@
                 du = Number.MAX_SAFE_INTEGER;
             }
 
+            console.log(dl)
+            console.log(du)
             circleset.filter(function(f) {
                 var g = f.Blood_glucose_mg_per_dL;
                 var k = f.Blood_ketones_mg_per_dL;
-                var d = f.Days_on_PKT;
+                var d = Number(f.Days_on_PKT);
                 var res = gl<=g && g<=gu && kl<=k && k<=ku && dl<=d && d<=du;
                 return !res;
             }).attr("r", 0);
